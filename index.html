@@ -146,6 +146,13 @@
       animation: fadeIn 0.5s ease-out;
     }
 
+    .intro-card img {
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto;
+      max-width: 800px;
+    }
+
     .intro-card p {
       font-size: 1.1em;
       margin-bottom: 20px;
@@ -250,6 +257,11 @@
 
     /* Responsive adjustments */
     @media (max-width: 600px) {
+      .intro-card img {
+        width: 100%;
+        padding: 0 15px;
+        box-sizing: border-box;
+      }
       .header {
         padding: 0.5rem 1rem;
       }
@@ -329,7 +341,7 @@
 
   <!-- Introduction Card -->
   <div id="intro-card" class="intro-card">
-    <img src="./student-conference.jpg" width="400px"" alt=" Student conference">
+    <img src="./student-conference.jpg" class="intro-image" alt="Student conference">
     <p data-key="intro_text"></p>
     <p data-key="worksheet_link"></p>
     <button onclick="hideIntro()" data-key="intro_button"></button>
