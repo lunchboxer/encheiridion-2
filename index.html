@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-key="header_title">Individual Intervention</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #004D40;
+      --background-color: #f4f4f4;
+      --text-color: #333;
+    }
+
+    body {
+      font-family: 'Lexend', sans-serif;
+      line-height: 1.6;
+      padding: 0px;
+      /* Reduced padding for mobile */
+      /* max-width: 800px; */
+      margin: auto;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      overflow-x: hidden;
+      /* Prevent horizontal scrolling */
+    }
+
+    /* Header styling */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background-color: var(--primary-color);
+      color: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 1.8em;
+      /* Smaller title */
+      font-weight: bold;
+    }
+
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      /* Space between icons */
+    }
+
+    /* General icon button styling */
+    .icon-button {
+      font-size: 1.8em;
+      /* Adjusted for icons */
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+      background-color: transparent;
+      /* No background by default */
+      border: none;
+      /* No border by default */
+      color: white;
+    }
+
+    .icon-button:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Table of Contents (TOC) Menu */
+    .toc-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      /* Dark overlay */
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transform: translateX(100%);
+      /* Start off-screen */
+      transition: transform 0.3s ease-in-out;
+      z-index: 1000;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .toc-menu.active {
+      transform: translateX(0);
+      /* Slide into view */
+    }
+
+    .toc-menu ul {
+      list-style: none;
+      padding: 0;
+      text-align: center;
+      width: 100%;
+    }
+
+    .toc-menu li {
+      margin-bottom: 0.5rem;
+    }
+
+    .toc-menu a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.5em;
+      padding: 10px 20px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+      display: block;
+      /* Make links block-level for larger touch target */
+    }
+
+    .toc-menu a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .close-menu-icon {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 2em;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .close-menu-icon:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Introduction Card */
+    .intro-card {
+      padding: 30px;
+      margin-bottom: 20px;
+      text-align: center;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .intro-card p {
+      font-size: 1.1em;
+      margin-bottom: 20px;
+    }
+
+    /* Main Guide Sections (no card decoration) */
+    .guide-section {
+      display: none;
+      padding: 1rem;
+      /* Hidden by default */
+      margin-bottom: 20px;
+      /* Keep margin for spacing */
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .guide-section.active {
+      display: block;
+      /* Show active section */
+    }
+
+    .guide-section h2 {
+      font-size: 1.6em;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 5px;
+    }
+
+    .guide-section h3 {
+      font-size: 1.3em;
+      margin-top: 25px;
+      margin-bottom: 10px;
+      color: #555;
+    }
+
+    .guide-section ul {
+      list-style: disc;
+      margin-left: 20px;
+      margin-bottom: 15px;
+    }
+
+    .guide-section li {
+      margin-bottom: 8px;
+    }
+
+    /* Buttons */
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 25px;
+      /* Rounded corners */
+      cursor: pointer;
+      margin-right: 15px;
+      margin-top: 20px;
+      font-size: 1em;
+      font-weight: bold;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: var(--primary-color);
+      transform: translateY(-2px);
+    }
+
+    .button-group {
+      margin-top: 30px;
+      border-top: 1px solid #ddd;
+      padding-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      /* Allow buttons to wrap on small screens */
+      justify-content: center;
+      /* Center buttons */
+      gap: 15px;
+      /* Space between buttons */
+    }
+
+    .button-group p {
+      width: 100%;
+      /* Ensure text takes full width */
+      text-align: center;
+      margin-top: 15px;
+      font-style: italic;
+      color: #666;
+    }
+
+    /* Fade-in animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      .header {
+        padding: 0.5rem 1rem;
+      }
+
+      .header h1 {
+        font-size: 1.5em;
+      }
+
+      .icon-button {
+        font-size: 1.5em;
+        /* Smaller icons on mobile */
+        padding: 5px;
+      }
+
+      .toc-menu a {
+        font-size: 1.2em;
+        padding: 0;
+      }
+
+      .guide-section h2 {
+        font-size: 1.4em;
+      }
+
+      .guide-section h3 {
+        font-size: 1.1em;
+      }
+
+      button {
+        width: 100%;
+        /* Full width buttons on small screens */
+        margin-right: 0;
+      }
+
+      .button-group {
+        flex-direction: column;
+        /* Stack buttons vertically */
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <h1 data-key="header_title"></h1>
+    <div class="header-icons">
+      <!-- Language toggle button with Font Awesome icon -->
+      <i id="language-toggle" class="fas fa-language icon-button" onclick="toggleLanguage()"
+        title="Toggle Language"></i>
+      <i class="fas fa-bars hamburger-icon icon-button" onclick="toggleMenu()"></i>
+    </div>
+  </div>
+
+  <!-- Table of Contents Menu -->
+  <nav id="toc-menu" class="toc-menu">
+    <i class="fas fa-times close-menu-icon" onclick="toggleMenu()"></i>
+    <ul>
+      <li><a href="#" onclick="showSection('intro-card'); return false;" data-key="toc_intro"></a></li>
+      <li><a href="#" onclick="showSection('prep'); return false;" data-key="toc_prep"></a></li>
+      <li><a href="#" onclick="showSection('check-in'); return false;" data-key="toc_check_in"></a></li>
+      <li><a href="#" onclick="showSection('facts'); return false;" data-key="toc_facts"></a></li>
+      <li><a href="#" onclick="showSection('impact'); return false;" data-key="toc_impact"></a></li>
+      <li><a href="#" onclick="showSection('perspective'); return false;" data-key="toc_perspective"></a></li>
+      <li><a href="#" onclick="showSection('needs'); return false;" data-key="toc_needs"></a></li>
+      <li><a href="#" onclick="showSection('solutions'); return false;" data-key="toc_solutions"></a></li>
+      <li><a href="#" onclick="showSection('plan'); return false;" data-key="toc_plan"></a></li>
+      <li><a href="#" onclick="showSection('ending'); return false;" data-key="toc_ending"></a></li>
+      <li><a href="#" onclick="showSection('unwilling'); return false;" data-key="toc_unwilling"></a></li>
+      <li><a href="#" onclick="showSection('struggle-understanding'); return false;"
+          data-key="toc_struggle_understanding"></a>
+      </li>
+      <li><a href="#" onclick="showSection('struggle-solutions'); return false;" data-key="toc_struggle_solutions"></a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Introduction Card -->
+  <div id="intro-card" class="intro-card">
+    <img src="./student-conference.jpg" width="400px"" alt=" Student conference">
+    <p data-key="intro_text"></p>
+    <p data-key="worksheet_link"></p>
+    <button onclick="hideIntro()" data-key="intro_button"></button>
+  </div>
+
+  <!-- Section 1: Quick Prep -->
+  <div id="prep" class="guide-section">
+    <h2 data-key="prep_title"></h2>
+    <p data-key="prep_intro"></p>
+    <ul>
+      <li data-key="prep_li_1"></li>
+      <li data-key="prep_li_2"></li>
+      <li data-key="prep_li_3"></li>
+    </ul>
+
+    <h3 data-key="prep_h3"></h3>
+    <p data-key="prep_invite_text"></p>
+    <p data-key="prep_suggested_phrasing"></p>
+    <ul>
+      <li data-key="prep_phrase_1"></li>
+      <li data-key="prep_phrase_2"></li>
+    </ul>
+    <div class="button-group">
+      <button onclick="showSection('check-in')" data-key="prep_button"></button>
+    </div>
+  </div>
+
+  <!-- Section 2: Check-in -->
+  <div id="check-in" class="guide-section">
+    <h2 data-key="check_in_title"></h2>
+    <p data-key="check_in_intro"></p>
+    <p data-key="check_in_sentence_frames"></p>
+    <ul>
+      <li data-key="check_in_frame_1"></li>
+      <li data-key="check_in_frame_2"></li>
+      <li data-key="check_in_frame_3"></li>
+    </ul>
+    <p data-key="check_in_examples"></p>
+    <ul>
+      <li data-key="check_in_example_1"></li>
+      <li data-key="check_in_example_2"></li>
+      <li data-key="check_in_example_3"></li>
+    </ul>
+    <p data-key="check_in_listen"></p>
+    <p data-key="check_in_question"></p>
+    <div class="button-group">
+      <button onclick="showSection('facts')" data-key="check_in_button_yes"></button>
+      <button onclick="showSection('unwilling')" data-key="check_in_button_no"></button>
+    </div>
+  </div>
+
+  <!-- Section 3: State Facts -->
+  <div id="facts" class="guide-section">
+    <h2 data-key="facts_title"></h2>
+    <p data-key="facts_intro"></p>
+    <p data-key="facts_sentence_frame"></p>
+    <p data-key="facts_examples"></p>
+    <ul>
+      <li data-key="facts_example_1"></li>
+      <li data-key="facts_example_2"></li>
+      <li data-key="facts_example_3"></li>
+      <li data-key="facts_example_4"></li>
+    </ul>
+    <p data-key="facts_listen"></p>
+    <p data-key="facts_question"></p>
+    <div class="button-group">
+      <button onclick="showSection('impact')" data-key="facts_button_yes"></button>
+      <button onclick="showSection('unwilling')" data-key="facts_button_no"></button>
+    </div>
+  </div>
+
+  <!-- Section 4: Explore Impact -->
+  <div id="impact" class="guide-section">
+    <h2 data-key="impact_title"></h2>
+    <p data-key="impact_intro"></p>
+    <p data-key="impact_sentence_frame"></p>
+    <p data-key="impact_question_frame"></p>
+    <p data-key="impact_examples"></p>
+    <ul>
+      <li data-key="impact_example_1"></li>
+      <li data-key="impact_example_2"></li>
+      <li data-key="impact_example_3"></li>
+      <li data-key="impact_example_4"></li>
+    </ul>
+    <p data-key="impact_listen"></p>
+    <p data-key="impact_question"></p>
+    <div class="button-group">
+      <button onclick="showSection('perspective')" data-key="impact_button_yes"></button>
+      <button onclick="showSection('struggle-understanding')" data-key="impact_button_no"></button>
+    </div>
+  </div>
+
+  <!-- Section 5: Understand Perspective -->
+  <div id="perspective" class="guide-section">
+    <h2 data-key="perspective_title"></h2>
+    <p data-key="perspective_intro"></p>
+    <p data-key="perspective_sentence_frames"></p>
+    <ul>
+      <li data-key="perspective_frame_1"></li>
+      <li data-key="perspective_frame_2"></li>
+    </ul>
+    <p data-key="perspective_listen"></p>
+    <p data-key="perspective_question"></p>
+    <div class="button-group">
+      <button onclick="showSection('needs')" data-key="perspective_button_yes"></button>
+      <button onclick="showSection('unwilling')" data-key="perspective_button_no"></button>
+    </div>
+  </div>
+
+  <!-- Section 6: Connect to Needs -->
+  <div id="needs" class="guide-section">
+    <h2 data-key="needs_title"></h2>
+    <p data-key="needs_intro"></p>
+    <p data-key="needs_sentence_frames"></p>
+    <ul>
+      <li data-key="needs_frame_1"></li>
+      <li data-key="needs_frame_2"></li>
+      <li data-key="needs_frame_3"></li>
+    </ul>
+    <p data-key="needs_examples"></p>
+    <ul>
+      <li data-key="needs_example_1"></li>
+      <li data-key="needs_example_2"></li>
+      <li data-key="needs_example_3"></li>
+    </ul>
+    <p data-key="needs_question"></p>
+    <div class="button-group">
+      <button onclick="showSection('solutions')" data-key="needs_button_yes"></button>
+      <button onclick="showSection('struggle-understanding')" data-key="needs_button_no"></button>
+    </div>
+  </div>
+
+  <!-- Section 7: Find Solutions -->
+  <div id="solutions" class="guide-section">
+    <h2 data-key="solutions_title"></h2>
+    <p data-key="solutions_intro"></p>
+    <p data-key="solutions_sentence_frames"></p>
+    <ul>
+      <li data-key="solutions_frame_1"></li>
+      <li data-key="solutions_frame_2"></li>
+    </ul>
+    <p data-key="solutions_examples"></p>
+    <ul>
+      <li data-key="solutions_example_1"></li>
+      <li data-key="solutions_example_2"></li>
+      <li data-key="solutions_example_3"></li>
+      <li data-key="solutions_example_4"></li>
+    </ul>
+    <p data-key="solutions_question"></p>
+    <div class="button-group">
+      <button onclick="showSection('plan')" data-key="solutions_button_yes"></button>
+      <button onclick="showSection('struggle-solutions')" data-key="solutions_button_no"></button>
+    </div>
+  </div>
+
+  <!-- Section 8: Make a Plan -->
+  <div id="plan" class="guide-section">
+    <h2 data-key="plan_title"></h2>
+    <p data-key="plan_intro"></p>
+    <p data-key="plan_sentence_frames"></p>
+    <ul>
+      <li data-key="plan_frame_1"></li>
+      <li data-key="plan_frame_2"></li>
+      <li data-key="plan_frame_3"></li>
+    </ul>
+    <p data-key="plan_examples"></p>
+    <ul>
+      <li data-key="plan_example_1"></li>
+      <li data-key="plan_example_2"></li>
+    </ul>
+    <p data-key="plan_question"></p>
+    <div class="button-group">
+      <button onclick="showSection('ending')" data-key="plan_button_yes"></button>
+      <button onclick="showSection('struggle-solutions')" data-key="plan_button_no"></button>
+    </div>
+  </div>
+
+  <!-- Section 9: End Conversation -->
+  <div id="ending" class="guide-section">
+    <h2 data-key="ending_title"></h2>
+    <p data-key="ending_intro"></p>
+    <p data-key="ending_sentence_frames"></p>
+    <ul>
+      <li data-key="ending_frame_1"></li>
+      <li data-key="ending_frame_2"></li>
+      <li data-key="ending_frame_3"></li>
+      <li data-key="ending_frame_4"></li>
+    </ul>
+    <p data-key="ending_complete"></p>
+    <div class="button-group">
+      <button onclick="showSection('prep')" data-key="ending_button"></button>
+    </div>
+  </div>
+
+  <!-- Section 10: Unwilling to Respond -->
+  <div id="unwilling" class="guide-section">
+    <h2 data-key="unwilling_title"></h2>
+    <p data-key="unwilling_intro"></p>
+    <p data-key="unwilling_sentence_frames"></p>
+    <ul>
+      <li data-key="unwilling_frame_1"></li>
+      <li data-key="unwilling_frame_2"></li>
+      <li data-key="unwilling_frame_3"></li>
+    </ul>
+    <p data-key="unwilling_examples"></p>
+    <ul>
+      <li data-key="unwilling_example_1"></li>
+      <li data-key="unwilling_example_2"></li>
+    </ul>
+    <p data-key="unwilling_after_space"></p>
+    <div class="button-group">
+      <button onclick="showSection('check-in')" data-key="unwilling_button_back"></button>
+      <p data-key="unwilling_note"></p>
+    </div>
+  </div>
+
+  <!-- Section 11: Struggle with Understanding -->
+  <div id="struggle-understanding" class="guide-section">
+    <h2 data-key="struggle_understanding_title"></h2>
+    <p data-key="struggle_understanding_intro"></p>
+    <p data-key="struggle_understanding_sentence_frames"></p>
+    <ul>
+      <li data-key="struggle_understanding_frame_1"></li>
+      <li data-key="struggle_understanding_frame_2"></li>
+      <li data-key="struggle_understanding_frame_3"></li>
+      <li data-key="struggle_understanding_frame_4"></li>
+    </ul>
+    <p data-key="struggle_understanding_examples"></p>
+    <ul>
+      <li data-key="struggle_understanding_example_1"></li>
+      <li data-key="struggle_understanding_example_2"></li>
+      <li data-key="struggle_understanding_example_3"></li>
+      <li data-key="struggle_understanding_example_4"></li>
+    </ul>
+    <p data-key="struggle_understanding_after_support"></p>
+    <div class="button-group">
+      <button onclick="showSection('impact')" data-key="struggle_understanding_button_impact"></button>
+      <button onclick="showSection('needs')" data-key="struggle_understanding_button_needs"></button>
+      <p data-key="struggle_understanding_note"></p>
+    </div>
+  </div>
+
+  <!-- Section 12: Struggle with Solutions -->
+  <div id="struggle-solutions" class="guide-section">
+    <h2 data-key="struggle_solutions_title"></h2>
+    <p data-key="struggle_solutions_intro"></p>
+    <p data-key="struggle_solutions_sentence_frames"></p>
+    <ul>
+      <li data-key="struggle_solutions_frame_1"></li>
+      <li data-key="struggle_solutions_frame_2"></li>
+      <li data-key="struggle_solutions_frame_3"></li>
+      <li data-key="struggle_solutions_frame_4"></li>
+    </ul>
+    <p data-key="struggle_solutions_examples"></p>
+    <ul>
+      <li data-key="struggle_solutions_example_1"></li>
+      <li data-key="struggle_solutions_example_2"></li>
+      <li data-key="struggle_solutions_example_3"></li>
+      <li data-key="struggle_solutions_example_4"></li>
+    </ul>
+    <p data-key="struggle_solutions_after_suggestions"></p>
+    <div class="button-group">
+      <button onclick="showSection('plan')" data-key="struggle_solutions_button_plan"></button>
+      <p data-key="struggle_solutions_note"></p>
+    </div>
+  </div>
+
+  <script>
+    // Language data
+    const translations = {
+      "en": {
+        "header_title": "Individual Intervention",
+        "toc_intro": "Introduction",
+        "toc_prep": "1. Quick Prep",
+        "toc_check_in": "2. Check-in",
+        "toc_facts": "3. State Facts",
+        "toc_impact": "4. Explore Impact",
+        "toc_perspective": "5. Understand Perspective",
+        "toc_needs": "6. Connect to Needs",
+        "toc_solutions": "7. Find Solutions",
+        "toc_plan": "8. Make a Plan",
+        "toc_ending": "9. End Conversation",
+        "toc_unwilling": "10. Unwilling to Respond",
+        "toc_struggle_understanding": "11. Struggle with Understanding",
+        "toc_struggle_solutions": "12. Struggle with Solutions",
+        "intro_text": "This guide will help you talk with students about their actions and find ways to make things better. Follow the steps, and if you need to make a choice, the guide will tell you which section to go to next.",
+        "worksheet_link": "You will need a printed copy of the <a href='./Individual reflection worksheet.pdf'>worksheet</a> to complete with the student.",
+        "intro_button": "Got It! Start Guide",
+        "prep_title": "1. Quick Prep",
+        "prep_intro": "Before you talk with the student, take a moment to get ready.",
+        "prep_li_1": "Take a deep, calm breath.",
+        "prep_li_2": "Remember something positive about the student.",
+        "prep_li_3": "Find a quiet, private spot to talk, away from other students.",
+        "prep_h3": "Inviting the Student",
+        "prep_invite_text": "When you are ready, invite the student to join you in the quiet spot. Be clear and calm in your invitation.",
+        "prep_suggested_phrasing": "Suggested Phrasings:",
+        "prep_phrase_1": "\"Hi [Student's Name], when you finish that sentence/activity, I'd like to talk with you for a few minutes in [mention the quiet spot, e.g., 'the calm corner' or 'just outside the door']. We can talk about what happened and how to make things better.\"",
+        "prep_phrase_2": "\"Hello [Student's Name], I noticed something just now, and I'd like to understand it better. Can you come with me to [mention the quiet spot] for a quick chat when you're ready?\"",
+        "prep_button": "Ready to Start",
+        "check_in_title": "2. Check-in",
+        "check_in_intro": "Start by gently checking in with the student about their current feelings. This helps establish a personal connection and provides emotional context for the conversation.",
+        "check_in_sentence_frames": "Sentence Frames:",
+        "check_in_frame_1": "\"How are you feeling right now?\"",
+        "check_in_frame_2": "\"Is there anything you want to share about how you're feeling?\"",
+        "check_in_frame_3": "\"I can see you might be feeling [sad/angry/frustrated]. Is that right?\"",
+        "check_in_examples": "Examples:",
+        "check_in_example_1": "\"How are you feeling right now, [student's name]?\"",
+        "check_in_example_2": "\"Before we talk about what happened, is there anything you want to share about how you're feeling?\"",
+        "check_in_example_3": "(If they seem upset) \"I can see you might be feeling a little sad. Is that how you feel?\"",
+        "check_in_listen": "Listen carefully to their answer.",
+        "check_in_question": "Does the student share their feelings or seem willing to engage?",
+        "check_in_button_yes": "Yes, they share",
+        "check_in_button_no": "No, unwilling to respond",
+        "facts_title": "3. State Facts",
+        "facts_intro": "Now it's time to talk. Start by sharing what you saw or heard. Keep it simple and about the facts, not about why they did it.",
+        "facts_sentence_frame": "Sentence Frame: \"I noticed ...\"",
+        "facts_examples": "Examples:",
+        "facts_example_1": "\"I noticed the loud noise during quiet reading time.\"",
+        "facts_example_2": "\"I noticed you and [student's name] were arguing about the blocks.\"",
+        "facts_example_3": "\"I noticed you were not working on your drawing.\"",
+        "facts_example_4": "\"I noticed you looked very sad and angry.\"",
+        "facts_listen": "Now, listen to the student. Do they respond and seem ready to talk?",
+        "facts_button_yes": "Yes, they respond",
+        "facts_button_no": "No, unwilling to respond",
+        "impact_title": "4. Explore Impact",
+        "impact_intro": "Help the student think about how their actions affected others or the situation.",
+        "impact_sentence_frame": "Sentence Frame:",
+        "impact_question_frame": "\"How do you think that affected ...?\"",
+        "impact_examples": "Examples:",
+        "impact_example_1": "\"How do you think that affected the other students or our classroom?\"",
+        "impact_example_2": "\"How do you think that affected [other student's name] or the play time?\"",
+        "impact_example_3": "\"How do you think that affected your learning?\"",
+        "impact_example_4": "\"How do you think your feelings affected others?\"",
+        "impact_listen": "Listen carefully to their answer.",
+        "impact_question": "Does the student seem to understand how their actions affected others?",
+        "impact_button_yes": "Yes, they understand",
+        "impact_button_no": "No, don't understand or agree",
+        "perspective_title": "5. Understand Perspective",
+        "perspective_intro": "Now, give the student a chance to share their side of the story. Listen with an open mind.",
+        "perspective_sentence_frames": "Sentence Frames:",
+        "perspective_frame_1": "\"What was going on for you at that moment?\"",
+        "perspective_frame_2": "\"Can you help me understand what was happening there?\"",
+        "perspective_listen": "Listen carefully to their answer.",
+        "perspective_question": "Does the student share their perspective?",
+        "perspective_button_yes": "Yes, they share",
+        "perspective_button_no": "No, unwilling to share",
+        "needs_title": "6. Connect to Needs",
+        "needs_intro": "Help the student think about what everyone needs to feel safe, respected, and able to learn or play. This includes their own needs.",
+        "needs_sentence_frames": "Sentence Frames:",
+        "needs_frame_1": "\"In our classroom, we all need to feel ...\"",
+        "needs_frame_2": "\"What do you think others needed at that moment?\"",
+        "needs_frame_3": "\"What do you think you needed at that moment?\"",
+        "needs_examples": "Examples for \"In our classroom, we all need to feel...\":",
+        "needs_example_1": "\"...safe and be able to learn.\"",
+        "needs_example_2": "\"...safe, respected, and included.\"",
+        "needs_example_3": "\"...happy and focused.\"",
+        "needs_question": "Does the student seem to understand the connection to needs and shared values?",
+        "needs_button_yes": "Yes, they see the connection",
+        "needs_button_no": "No, struggle with connection",
+        "solutions_title": "7. Find Solutions",
+        "solutions_intro": "Work together to find ways to make things better for next time. This is about finding a plan together, not just telling them what to do.",
+        "solutions_sentence_frames": "Sentence Frames:",
+        "solutions_frame_1": "\"What could we do differently next time so ...?\"",
+        "solutions_frame_2": "\"What ideas do you have for how you can meet your need without ...?\"",
+        "solutions_examples": "Examples:",
+        "solutions_example_1": "\"...so everyone can learn?\"",
+        "solutions_example_2": "\"...so everyone feels good and can play together?\"",
+        "solutions_example_3": "\"...without disrupting others?\"",
+        "solutions_example_4": "\"...without hurting anyone's feelings?\"",
+        "solutions_question": "Does the student have ideas for solutions?",
+        "solutions_button_yes": "Yes, they have ideas",
+        "solutions_button_no": "No, struggle to brainstorm",
+        "plan_title": "8. Make a Plan",
+        "plan_intro": "Agree on a clear plan for what the student will do next time. Make sure it's something they can really do.",
+        "plan_sentence_frames": "Sentence Frames:",
+        "plan_frame_1": "\"So, our plan is ...\"",
+        "plan_frame_2": "\"How will you know if our plan is working?\"",
+        "plan_frame_3": "\"What will you do if you need help with the plan?\"",
+        "plan_examples": "Examples:",
+        "plan_example_1": "\"So, our plan is that next time you feel frustrated during quiet reading, you will raise your hand and ask to take a short break.\"",
+        "plan_example_2": "\"So, our plan is that when you want to play with the blocks, you will ask [student's name] if they are ready to share.\"",
+        "plan_question": "Does the student agree to the plan?",
+        "plan_button_yes": "Yes, they agree",
+        "plan_button_no": "No, they don't agree or are unsure",
+        "ending_title": "9. End Conversation",
+        "ending_intro": "Finish the conversation on a positive and hopeful note. Reaffirm your belief in them.",
+        "ending_sentence_frames": "Sentence Frames:",
+        "ending_frame_1": "\"Thank you for talking with me and making a plan. I’m really looking forward to seeing you succeed with this new plan. I know you can do it!\"",
+        "ending_frame_2": "\"I appreciate you thinking about how to make things better for everyone.\"",
+        "ending_frame_3": "\"I believe in you, and I'm here to help.\"",
+        "ending_frame_4": "\"How about I follow up with you [time] to see how it’s going?\"",
+        "ending_complete": "The conversation is complete.",
+        "ending_button": "Start Over",
+        "unwilling_title": "10. Unwilling to Respond",
+        "unwilling_intro": "If the student is not ready to talk, give them space and try again later. This is about building trust, not forcing a conversation.",
+        "unwilling_sentence_frames": "Sentence Frames:",
+        "unwilling_frame_1": "\"It looks like you're not ready to talk right now, and that's okay.\"",
+        "unwilling_frame_2": "\"I'm here when you are ready to talk about what happened.\"",
+        "unwilling_frame_3": "\"We can try again in a little while.\"",
+        "unwilling_examples": "Examples:",
+        "unwilling_example_1": "\"It looks like you're not ready to talk right now, and that's okay. I'm here when you are ready.\"",
+        "unwilling_example_2": "\"I understand you might not want to talk right now. We can try again after recess.\"",
+        "unwilling_after_space": "After giving them space, try to re-engage later:",
+        "unwilling_button_back": "Go back to Check-in",
+        "unwilling_note": "If they continue to be unwilling to talk after a second attempt, consider involving a school counselor or another trusted adult.",
+        "struggle_understanding_title": "11. Struggle with Understanding",
+        "struggle_understanding_intro": "If the student is having trouble seeing how their actions affect others or connecting to needs, provide more support and concrete examples.",
+        "struggle_understanding_sentence_frames": "Sentence Frames:",
+        "struggle_understanding_frame_1": "\"When you [describe action], what happened next?\"",
+        "struggle_understanding_frame_2": "\"How do you think [other student/classroom] felt when that happened?\"",
+        "struggle_understanding_frame_3": "\"Remember how we talked about everyone needing to feel safe? How did [action] make others feel about being safe?\"",
+        "struggle_understanding_frame_4": "\"Let's think about what you needed in that moment. Was it to feel heard? To have space?\"",
+        "struggle_understanding_examples": "Examples:",
+        "struggle_understanding_example_1": "\"When you made the loud noise, what happened next? Did others stop reading?\"",
+        "struggle_understanding_example_2": "\"How do you think [other student's name] felt when you took their blocks without asking? Were they happy or sad?\"",
+        "struggle_understanding_example_3": "\"Remember how we talked about everyone needing to feel respected? When you interrupted, how did that make others feel about being respected?\"",
+        "struggle_understanding_example_4": "\"Maybe you needed to move your body. How could you do that without making noise during quiet reading?\"",
+        "struggle_understanding_after_support": "After providing more support:",
+        "struggle_understanding_button_impact": "Go back to Explore Impact",
+        "struggle_understanding_button_needs": "Go back to Connect to Needs",
+        "struggle_understanding_note": "If they still struggle, consider using visual aids or role-playing, or seeking guidance from a colleague.",
+        "struggle_solutions_title": "12. Struggle with Solutions",
+        "struggle_solutions_intro": "If the student is having difficulty coming up with ideas or committing to a plan, offer gentle suggestions and support.",
+        "struggle_solutions_sentence_frames": "Sentence Frames:",
+        "struggle_solutions_frame_1": "\"What if we tried ...?\"",
+        "struggle_solutions_frame_2": "\"Would it help if ...?\"",
+        "struggle_solutions_frame_3": "\"How about we try this plan for today, and then we can talk about it again tomorrow?\"",
+        "struggle_solutions_frame_4": "\"What part of this plan feels tricky for you?\"",
+        "struggle_solutions_examples": "Examples:",
+        "struggle_solutions_example_1": "\"What if we tried taking three deep breaths when you feel angry, before you talk?\"",
+        "struggle_solutions_example_2": "\"Would it help if we had a special quiet spot you could go to when you need a break?\"",
+        "struggle_solutions_example_3": "\"How about we try this plan for today, and if it's too hard, we can talk about a different idea tomorrow?\"",
+        "struggle_solutions_example_4": "\"What part of this plan feels tricky for you? Is it remembering to ask before taking the blocks?\"",
+        "struggle_solutions_after_suggestions": "After offering suggestions:",
+        "struggle_solutions_button_plan": "Go back to Make a Plan",
+        "struggle_solutions_note": "If they still struggle, it might be helpful to involve a parent or guardian, or a trusted adult to brainstorm solutions together."
+      },
+      "zh": {
+        "header_title": "个人干预指南",
+        "toc_intro": "介绍",
+        "toc_prep": "1. 快速准备",
+        "toc_check_in": "2. 签到",
+        "toc_facts": "3. 陈述事实",
+        "toc_impact": "4. 探讨影响",
+        "toc_perspective": "5. 理解观点",
+        "toc_needs": "6. 连接需求",
+        "toc_solutions": "7. 寻找解决方案",
+        "toc_plan": "8. 制定计划",
+        "toc_ending": "9. 结束对话",
+        "toc_unwilling": "10. 不愿回应",
+        "toc_struggle_understanding": "11. 理解困难",
+        "toc_struggle_solutions": "12. 解决方案困难",
+        "intro_text": "本指南将帮助您与学生讨论他们的行为，并找到改进的方法。请遵循步骤，如果您需要做出选择，指南会告诉您下一步要进入哪个部分。",
+        "intro_button": "明白了！开始指南",
+        "prep_title": "1. 快速准备",
+        "prep_intro": "在与学生交谈之前，请花点时间做好准备。",
+        "prep_li_1": "深呼吸，保持冷静。",
+        "prep_li_2": "记住学生的一些优点。",
+        "prep_li_3": "找一个安静、私密的地方交谈，远离其他学生。",
+        "prep_h3": "邀请学生",
+        "prep_invite_text": "准备好后，邀请学生到安静的地方与您交谈。您的邀请要清晰、冷静。",
+        "prep_suggested_phrasing": "建议措辞：",
+        "prep_phrase_1": "“嗨，[学生姓名]，当你完成那个句子/活动后，我想和你谈几分钟，在[提到安静的地方，例如，‘平静角’或‘门外’]。我们可以谈谈发生了什么以及如何让事情变得更好。”",
+        "prep_phrase_2": "“你好，[学生姓名]，我刚才注意到一些事情，我想更好地了解它。你准备好后能和我一起到[提到安静的地方]快速聊一下吗？”",
+        "prep_button": "准备开始",
+        "check_in_title": "2. 签到",
+        "check_in_intro": "首先轻轻地询问学生当前的感受。这有助于建立个人联系并为对话提供情感背景。",
+        "check_in_sentence_frames": "句型：",
+        "check_in_frame_1": "“你现在感觉怎么样？”",
+        "check_in_frame_2": "“你有什么想分享的关于你的感受吗？”",
+        "check_in_frame_3": "“我看得出你可能感到[悲伤/愤怒/沮丧]。是这样吗？”",
+        "check_in_examples": "例子：",
+        "check_in_example_1": "“你现在感觉怎么样，[学生姓名]？”",
+        "check_in_example_2": "“在我们谈论发生的事情之前，你有什么想分享的关于你的感受吗？”",
+        "check_in_example_3": "（如果他们看起来不高兴）“我看得出你可能有点悲伤。你是这样感觉的吗？”",
+        "check_in_listen": "仔细听他们的回答。",
+        "check_in_question": "学生是否分享他们的感受或似乎愿意参与？",
+        "check_in_button_yes": "是的，他们分享了",
+        "check_in_button_no": "不，不愿回应",
+        "facts_title": "3. 陈述事实",
+        "facts_intro": "现在是时候谈谈了。首先分享你看到或听到的。保持简单，只谈事实，而不是他们为什么这样做。",
+        "facts_sentence_frame": "句型：“我注意到……”",
+        "facts_examples": "例子：",
+        "facts_example_1": "“我注意到安静阅读时间里有很大的噪音。”",
+        "facts_example_2": "“我注意到你和[学生姓名]在争论积木。”",
+        "facts_example_3": "“我注意到你没有在画画。”",
+        "facts_example_4": "“我注意到你看起来非常悲伤和愤怒。”",
+        "facts_listen": "现在，听听学生怎么说。他们是否回应并似乎准备好交谈？",
+        "facts_button_yes": "是的，他们回应了",
+        "facts_button_no": "不，不愿回应",
+        "impact_title": "4. 探讨影响",
+        "impact_intro": "帮助学生思考他们的行为如何影响他人或情况。",
+        "impact_sentence_frame": "句型：",
+        "impact_question_frame": "“你认为这会如何影响……？”",
+        "impact_examples": "例子：",
+        "impact_example_1": "“你认为这会如何影响其他学生或我们的教室？”",
+        "impact_example_2": "“你认为这会如何影响[其他学生姓名]或玩耍时间？”",
+        "impact_example_3": "“你认为这会如何影响你的学习？”",
+        "impact_example_4": "“你认为你的感受如何影响他人？”",
+        "impact_listen": "仔细听他们的回答。",
+        "impact_question": "学生是否似乎理解他们的行为如何影响他人？",
+        "impact_button_yes": "是的，他们理解",
+        "impact_button_no": "不，不理解或不同意",
+        "perspective_title": "5. 理解观点",
+        "perspective_intro": "现在，给学生一个机会分享他们的故事。以开放的心态倾听。",
+        "perspective_sentence_frames": "句型：",
+        "perspective_frame_1": "“当时你发生了什么？”",
+        "perspective_frame_2": "“你能帮我理解那里发生了什么吗？”",
+        "perspective_listen": "仔细听他们的回答。",
+        "perspective_question": "学生是否分享他们的观点？",
+        "perspective_button_yes": "是的，他们分享了",
+        "perspective_button_no": "不，不愿分享",
+        "needs_title": "6. 连接需求",
+        "needs_intro": "帮助学生思考每个人需要什么才能感到安全、受到尊重并能够学习或玩耍。这包括他们自己的需求。",
+        "needs_sentence_frames": "句型：",
+        "needs_frame_1": "“在我们的教室里，我们都需要感到……”",
+        "needs_frame_2": "“你认为当时其他人需要什么？”",
+        "needs_frame_3": "“你认为当时你需要什么？”",
+        "needs_examples": "“在我们的教室里，我们都需要感到……”的例子：",
+        "needs_example_1": "“……安全并能学习。”",
+        "needs_example_2": "“……安全、受到尊重和被包容。”",
+        "needs_example_3": "“……快乐和专注。”",
+        "needs_question": "学生是否似乎理解与需求和共同价值观的联系？",
+        "needs_button_yes": "是的，他们看到了联系",
+        "needs_button_no": "不，难以理解联系",
+        "solutions_title": "7. 寻找解决方案",
+        "solutions_intro": "共同努力寻找下次改进的方法。这是关于共同制定计划，而不仅仅是告诉他们该做什么。",
+        "solutions_sentence_frames": "句型：",
+        "solutions_frame_1": "“下次我们可以怎么做才能……？”",
+        "solutions_frame_2": "“你有什么想法，如何在不……的情况下满足你的需求？”",
+        "solutions_examples": "例子：",
+        "solutions_example_1": "“……这样每个人都可以学习？”",
+        "solutions_example_2": "“……这样每个人都感觉良好，可以一起玩耍？”",
+        "solutions_example_3": "“……而不打扰他人？”",
+        "solutions_example_4": "“……而不伤害任何人的感情？”",
+        "solutions_question": "学生是否有解决方案的想法？",
+        "solutions_button_yes": "是的，他们有想法",
+        "solutions_button_no": "不，难以集思广益",
+        "plan_title": "8. 制定计划",
+        "plan_intro": "就学生下次将做什么达成明确的计划。确保这是他们真正能做到的事情。",
+        "plan_sentence_frames": "句型：",
+        "plan_frame_1": "“所以，我们的计划是……”",
+        "plan_frame_2": "“你如何知道我们的计划是否有效？”",
+        "plan_frame_3": "“如果计划需要帮助，你会怎么做？”",
+        "plan_examples": "例子：",
+        "plan_example_1": "“所以，我们的计划是，下次你在安静阅读时感到沮丧，你会举手并要求短暂休息。”",
+        "plan_example_2": "“所以，我们的计划是，当你想要玩积木时，你会问[学生姓名]他们是否准备好分享。”",
+        "plan_question": "学生是否同意该计划？",
+        "plan_button_yes": "是的，他们同意",
+        "plan_button_no": "不，他们不同意或不确定",
+        "ending_title": "9. 结束对话",
+        "ending_intro": "以积极和充满希望的语气结束对话。重申你对他们的信任。",
+        "ending_sentence_frames": "句型：",
+        "ending_frame_1": "“谢谢你和我谈话并制定计划。我非常期待看到你成功实施这个新计划。我知道你能做到！”",
+        "ending_frame_2": "“我很感谢你思考如何让每个人都变得更好。”",
+        "ending_frame_3": "“我相信你，我会在这里提供帮助。”",
+        "ending_frame_4": "“我什么时候和你跟进一下，看看进展如何？”",
+        "ending_complete": "对话完成。",
+        "ending_button": "重新开始",
+        "unwilling_title": "10. 不愿回应",
+        "unwilling_intro": "如果学生还没有准备好交谈，给他们一些空间，稍后再试。这是关于建立信任，而不是强迫对话。",
+        "unwilling_sentence_frames": "句型：",
+        "unwilling_frame_1": "“你现在似乎还没有准备好交谈，没关系。”",
+        "unwilling_frame_2": "“当你准备好谈论发生的事情时，我在这里。”",
+        "unwilling_frame_3": "“我们可以过一会儿再试。”",
+        "unwilling_examples": "例子：",
+        "unwilling_example_1": "“你现在似乎还没有准备好交谈，没关系。当你准备好时，我在这里。”",
+        "unwilling_example_2": "“我理解你现在可能不想说话。我们可以在课间休息后再试。”",
+        "unwilling_after_space": "给他们一些空间后，稍后再尝试重新接触：",
+        "unwilling_button_back": "返回签到",
+        "unwilling_note": "如果他们第二次尝试后仍然不愿交谈，请考虑让学校辅导员或其他值得信任的成年人介入。",
+        "struggle_understanding_title": "11. 理解困难",
+        "struggle_understanding_intro": "如果学生难以理解他们的行为如何影响他人或与需求联系起来，请提供更多支持和具体例子。",
+        "struggle_understanding_sentence_frames": "句型：",
+        "struggle_understanding_frame_1": "“当你[描述行动]时，接下来发生了什么？”",
+        "struggle_understanding_frame_2": "“你认为[其他学生/教室]在发生那件事时感觉如何？”",
+        "struggle_understanding_frame_3": "“还记得我们谈到每个人都需要感到安全吗？[行动]如何让其他人对安全感到不安？”",
+        "struggle_understanding_frame_4": "“让我们想想你当时需要什么。是想被倾听吗？还是需要空间？”",
+        "struggle_understanding_examples": "例子：",
+        "struggle_understanding_example_1": "“当你发出很大的噪音时，接下来发生了什么？其他人停止阅读了吗？”",
+        "struggle_understanding_example_2": "“你认为[其他学生姓名]在你没有问的情况下拿走他们的积木时感觉如何？他们是高兴还是悲伤？”",
+        "struggle_understanding_example_3": "“还记得我们谈到每个人都需要受到尊重吗？当你打断时，这如何让其他人对受到尊重感到不安？”",
+        "struggle_understanding_example_4": "“也许你需要活动一下身体。你如何在安静阅读时不发出噪音地做到这一点？”",
+        "struggle_understanding_after_support": "提供更多支持后：",
+        "struggle_understanding_button_impact": "返回探讨影响",
+        "struggle_understanding_button_needs": "返回连接需求",
+        "struggle_understanding_note": "如果他们仍然有困难，可以考虑使用视觉辅助工具或角色扮演，或寻求同事的指导。",
+        "struggle_solutions_title": "12. 解决方案困难",
+        "struggle_solutions_intro": "如果学生难以提出想法或承诺计划，请提供温和的建议和支持。",
+        "struggle_solutions_sentence_frames": "句型：",
+        "struggle_solutions_frame_1": "“如果我们尝试……会怎么样？”",
+        "struggle_solutions_frame_2": "“如果……会有帮助吗？”",
+        "struggle_solutions_frame_3": "“我们今天先试试这个计划，然后明天再谈谈怎么样？”",
+        "struggle_solutions_frame_4": "“这个计划的哪一部分让你觉得棘手？”",
+        "struggle_solutions_examples": "例子：",
+        "struggle_solutions_example_1": "“如果我们尝试在你感到愤怒时深呼吸三次，然后再说话，怎么样？”",
+        "struggle_solutions_example_2": "“如果我们有一个特殊的安静区域，你可以在需要休息时去那里，会有帮助吗？”",
+        "struggle_solutions_example_3": "“我们今天先试试这个计划，如果太难，我们明天可以讨论一个不同的想法，怎么样？”",
+        "struggle_solutions_example_4": "“这个计划的哪一部分让你觉得棘手？是记住在拿积木之前先问一下吗？”",
+        "struggle_solutions_after_suggestions": "提供建议后：",
+        "struggle_solutions_button_plan": "返回制定计划",
+        "struggle_solutions_note": "如果他们仍然有困难，寻求家长或监护人，或值得信任的成年人共同集思广益可能会有所帮助。"
+      },
+      "both": {
+        "header_title": "Individual Intervention<br>个人干预指南",
+        "toc_intro": "Introduction<br>介绍",
+        "toc_prep": "1. Quick Prep<br>1. 快速准备",
+        "toc_check_in": "2. Check-in<br>2. 签到",
+        "toc_facts": "3. State Facts<br>3. 陈述事实",
+        "toc_impact": "4. Explore Impact<br>4. 探讨影响",
+        "toc_perspective": "5. Understand Perspective<br>5. 理解观点",
+        "toc_needs": "6. Connect to Needs<br>6. 连接需求",
+        "toc_solutions": "7. Find Solutions<br>7. 寻找解决方案",
+        "toc_plan": "8. Make a Plan<br>8. 制定计划",
+        "toc_ending": "9. End Conversation<br>9. 结束对话",
+        "toc_unwilling": "10. Unwilling to Respond<br>10. 不愿回应",
+        "toc_struggle_understanding": "11. Struggle with Understanding<br>11. 理解困难",
+        "toc_struggle_solutions": "12. Struggle with Solutions<br>12. 解决方案困难",
+        "intro_text": "This guide will help you talk with students about their actions and find ways to make things better. Follow the steps, and if you need to make a choice, the guide will tell you which section to go to next.<br>本指南将帮助您与学生讨论他们的行为，并找到改进的方法。请遵循步骤，如果您需要做出选择，指南会告诉您下一步要进入哪个部分。",
+        "intro_button": "Got It! Start Guide<br>明白了！开始指南",
+        "prep_title": "1. Quick Prep<br>1. 快速准备",
+        "prep_intro": "Before you talk with the student, take a moment to get ready.<br>在与学生交谈之前，请花点时间做好准备。",
+        "prep_li_1": "Take a deep, calm breath.<br>深呼吸，保持冷静。",
+        "prep_li_2": "Remember something positive about the student.<br>记住学生的一些优点。",
+        "prep_li_3": "Find a quiet, private spot to talk, away from other students.<br>找一个安静、私密的地方交谈，远离其他学生。",
+        "prep_h3": "Inviting the Student<br>邀请学生",
+        "prep_invite_text": "When you are ready, invite the student to join you in the quiet spot. Be clear and calm in your invitation.<br>准备好后，邀请学生到安静的地方与您交谈。您的邀请要清晰、冷静。",
+        "prep_suggested_phrasing": "Suggested Phrasings:<br>建议措辞：",
+        "prep_phrase_1": "\"Hi [Student's Name], when you finish that sentence/activity, I'd like to talk with you for a few minutes in [mention the quiet spot, e.g., 'the calm corner' or 'just outside the door']. We can talk about what happened and how to make things better.\"<br>“嗨，[学生姓名]，当你完成那个句子/活动后，我想和你谈几分钟，在[提到安静的地方，例如，‘平静角’或‘门外’]。我们可以谈谈发生了什么以及如何让事情变得更好。”",
+        "prep_phrase_2": "\"Hello [Student's Name], I noticed something just now, and I'd like to understand it better. Can you come with me to [mention the quiet spot] for a quick chat when you're ready?\"<br>“你好，[学生姓名]，我刚才注意到一些事情，我想更好地了解它。你准备好后能和我一起到[提到安静的地方]快速聊一下吗？”",
+        "prep_button": "Ready to Start<br>准备开始",
+        "check_in_title": "2. Check-in<br>2. 签到",
+        "check_in_intro": "Start by gently checking in with the student about their current feelings. This helps establish a personal connection and provides emotional context for the conversation.<br>首先轻轻地询问学生当前的感受。这有助于建立个人联系并为对话提供情感背景。",
+        "check_in_sentence_frames": "Sentence Frames:<br>句型：",
+        "check_in_frame_1": "\"How are you feeling right now?\"<br>“你现在感觉怎么样？”",
+        "check_in_frame_2": "\"Is there anything you want to share about how you're feeling?\"<br>“你有什么想分享的关于你的感受吗？”",
+        "check_in_frame_3": "\"I can see you might be feeling [sad/angry/frustrated]. Is that right?\"<br>“我看得出你可能感到[悲伤/愤怒/沮丧]。是这样吗？”",
+        "check_in_examples": "Examples:<br>例子：",
+        "check_in_example_1": "\"How are you feeling right now, [student's name]?\"<br>“你现在感觉怎么样，[学生姓名]？”",
+        "check_in_example_2": "\"Before we talk about what happened, is there anything you want to share about how you're feeling?\"<br>“在我们谈论发生的事情之前，你有什么想分享的关于你的感受吗？”",
+        "check_in_example_3": "(If they seem upset) \"I can see you might be feeling a little sad. Is that how you feel?\"<br>（如果他们看起来不高兴）“我看得出你可能有点悲伤。你是这样感觉的吗？”",
+        "check_in_listen": "Listen carefully to their answer.<br>仔细听他们的回答。",
+        "check_in_question": "Does the student share their feelings or seem willing to engage?<br>学生是否分享他们的感受或似乎愿意参与？",
+        "check_in_button_yes": "Yes, they share<br>是的，他们分享了",
+        "check_in_button_no": "No, unwilling to respond<br>不，不愿回应",
+        "facts_title": "3. State Facts<br>3. 陈述事实",
+        "facts_intro": "Now it's time to talk. Start by sharing what you saw or heard. Keep it simple and about the facts, not about why they did it.<br>现在是时候谈谈了。首先分享你看到或听到的。保持简单，只谈事实，而不是他们为什么这样做。",
+        "facts_sentence_frame": "Sentence Frame: \"I noticed ...\"<br>句型：“我注意到……”",
+        "facts_examples": "Examples:<br>例子：",
+        "facts_example_1": "\"I noticed the loud noise during quiet reading time.\"<br>“我注意到安静阅读时间里有很大的噪音。”",
+        "facts_example_2": "\"I noticed you and [student's name] were arguing about the blocks.\"<br>“我注意到你和[学生姓名]在争论积木。”",
+        "facts_example_3": "\"I noticed you were not working on your drawing.\"<br>“我注意到你没有在画画。”",
+        "facts_example_4": "\"I noticed you looked very sad and angry.\"<br>“我注意到你看起来非常悲伤和愤怒。”",
+        "facts_listen": "Now, listen to the student. Do they respond and seem ready to talk?<br>现在，听听学生怎么说。他们是否回应并似乎准备好交谈？",
+        "facts_button_yes": "Yes, they respond<br>是的，他们回应了",
+        "facts_button_no": "No, unwilling to respond<br>不，不愿回应",
+        "impact_title": "4. Explore Impact<br>4. 探讨影响",
+        "impact_intro": "Help the student think about how their actions affected others or the situation.<br>帮助学生思考他们的行为如何影响他人或情况。",
+        "impact_sentence_frame": "Sentence Frame:<br>句型：",
+        "impact_question_frame": "\"How do you think that affected ...?\"<br>“你认为这会如何影响……？”",
+        "impact_examples": "Examples:<br>例子：",
+        "impact_example_1": "\"How do you think that affected the other students or our classroom?\"<br>“你认为这会如何影响其他学生或我们的教室？”",
+        "impact_example_2": "\"How do you think that affected [other student's name] or the play time?\"<br>“你认为这会如何影响[其他学生姓名]或玩耍时间？”",
+        "impact_example_3": "\"How do you think that affected your learning?\"<br>“你认为这会如何影响你的学习？”",
+        "impact_example_4": "\"How do you think your feelings affected others?\"<br>“你认为你的感受如何影响他人？”",
+        "impact_listen": "Listen carefully to their answer.<br>仔细听他们的回答。",
+        "impact_question": "Does the student seem to understand how their actions affected others?<br>学生是否似乎理解他们的行为如何影响他人？",
+        "impact_button_yes": "Yes, they understand<br>是的，他们理解",
+        "impact_button_no": "No, don't understand or agree<br>不，不理解或不同意",
+        "perspective_title": "5. Understand Perspective<br>5. 理解观点",
+        "perspective_intro": "Now, give the student a chance to share their side of the story. Listen with an open mind.<br>现在，给学生一个机会分享他们的故事。以开放的心态倾听。",
+        "perspective_sentence_frames": "Sentence Frames:<br>句型：",
+        "perspective_frame_1": "\"What was going on for you at that moment?\"<br>“当时你发生了什么？”",
+        "perspective_frame_2": "\"Can you help me understand what was happening there?\"<br>“你能帮我理解那里发生了什么吗？”",
+        "perspective_listen": "Listen carefully to their answer.<br>仔细听他们的回答。",
+        "perspective_question": "Does the student share their perspective?<br>学生是否分享他们的观点？",
+        "perspective_button_yes": "Yes, they share<br>是的，他们分享了",
+        "perspective_button_no": "No, unwilling to share<br>不，不愿分享",
+        "needs_title": "6. Connect to Needs<br>6. 连接需求",
+        "needs_intro": "Help the student think about what everyone needs to feel safe, respected, and able to learn or play. This includes their own needs.<br>帮助学生思考每个人需要什么才能感到安全、受到尊重并能够学习或玩耍。这包括他们自己的需求。",
+        "needs_sentence_frames": "句型：",
+        "needs_frame_1": "“在我们的教室里，我们都需要感到……”",
+        "needs_frame_2": "“你认为当时其他人需要什么？”",
+        "needs_frame_3": "“你认为当时你需要什么？”",
+        "needs_examples": "“在我们的教室里，我们都需要感到……”的例子：",
+        "needs_example_1": "“……安全并能学习。”",
+        "needs_example_2": "“……安全、受到尊重和被包容。”",
+        "needs_example_3": "“……快乐和专注。”",
+        "needs_question": "学生是否似乎理解与需求和共同价值观的联系？",
+        "needs_button_yes": "Yes, they see the connection<br>是的，他们看到了联系",
+        "needs_button_no": "No,难以理解联系",
+        "solutions_title": "7. Find Solutions<br>7. 寻找解决方案",
+        "solutions_intro": "Work together to find ways to make things better for next time. This is about finding a plan together, not just telling them what to do.<br>共同努力寻找下次改进的方法。这是关于共同制定计划，而不仅仅是告诉他们该做什么。",
+        "solutions_sentence_frames": "句型：",
+        "solutions_frame_1": "“下次我们可以怎么做才能……？”",
+        "solutions_frame_2": "“你有什么想法，如何在不……的情况下满足你的需求？”",
+        "solutions_examples": "例子：",
+        "solutions_example_1": "“……这样每个人都可以学习？”",
+        "solutions_example_2": "“……这样每个人都感觉良好，可以一起玩耍？”",
+        "solutions_example_3": "“……而不打扰他人？”",
+        "solutions_example_4": "“……而不伤害任何人的感情？”",
+        "solutions_question": "学生是否有解决方案的想法？",
+        "solutions_button_yes": "Yes, they have ideas<br>是的，他们有想法",
+        "solutions_button_no": "No,难以集思广益",
+        "plan_title": "8. Make a Plan<br>8. 制定计划",
+        "plan_intro": "Agree on a clear plan for what the student will do next time. Make sure it's something they can really do.<br>就学生下次将做什么达成明确的计划。确保这是他们真正能做到的事情。",
+        "plan_sentence_frames": "句型：",
+        "plan_frame_1": "“所以，我们的计划是……”",
+        "plan_frame_2": "“你如何知道我们的计划是否有效？”",
+        "plan_frame_3": "“如果计划需要帮助，你会怎么做？”",
+        "plan_examples": "例子：",
+        "plan_example_1": "“所以，我们的计划是，下次你在安静阅读时感到沮丧，你会举手并要求短暂休息。”",
+        "plan_example_2": "“所以，我们的计划是，当你想要玩积木时，你会问[学生姓名]他们是否准备好分享。”",
+        "plan_question": "学生是否同意该计划？",
+        "plan_button_yes": "Yes, they agree<br>是的，他们同意",
+        "plan_button_no": "不，他们不同意或不确定",
+        "ending_title": "9. End Conversation<br>9. 结束对话",
+        "ending_intro": "Finish the conversation on a positive and hopeful note. Reaffirm your belief in them.<br>以积极和充满希望的语气结束对话。重申你对他们的信任。",
+        "ending_sentence_frames": "句型：",
+        "ending_frame_1": "“谢谢你和我谈话并制定计划。我非常期待看到你成功实施这个新计划。我知道你能做到！”",
+        "ending_frame_2": "“我很感谢你思考如何让每个人都变得更好。”",
+        "ending_frame_3": "“我相信你，我会在这里提供帮助。”",
+        "ending_frame_4": "“我什么时候和你跟进一下，看看进展如何？”",
+        "ending_complete": "对话完成。",
+        "ending_button": "重新开始",
+        "unwilling_title": "10. Unwilling to Respond<br>10. 不愿回应",
+        "unwilling_intro": "If the student is not ready to talk, give them space and try again later. This is about building trust, not forcing a conversation.<br>如果学生还没有准备好交谈，给他们一些空间，稍后再试。这是关于建立信任，而不是强迫对话。",
+        "unwilling_sentence_frames": "句型：",
+        "unwilling_frame_1": "“你现在似乎还没有准备好交谈，没关系。”",
+        "unwilling_frame_2": "“当你准备好谈论发生的事情时，我在这里。”",
+        "unwilling_frame_3": "“我们可以过一会儿再试。”",
+        "unwilling_examples": "例子：",
+        "unwilling_example_1": "“你现在似乎还没有准备好交谈，没关系。当你准备好时，我在这里。”",
+        "unwilling_example_2": "“我理解你现在可能不想说话。我们可以在课间休息后再试。”",
+        "unwilling_after_space": "After giving them space, try to re-engage later:<br>给他们一些空间后，稍后再尝试重新接触：",
+        "unwilling_button_back": "Go back to Check-in<br>返回签到",
+        "unwilling_note": "If they continue to be unwilling to talk after a second attempt, consider involving a school counselor or another trusted adult.<br>如果他们第二次尝试后仍然不愿交谈，请考虑让学校辅导员或其他值得信任的成年人介入。",
+        "struggle_understanding_title": "11. Struggle with Understanding<br>11. 理解困难",
+        "struggle_understanding_intro": "If the student is having trouble seeing how their actions affect others or connecting to needs, provide more support and concrete examples.<br>如果学生难以理解他们的行为如何影响他人或与需求联系起来，请提供更多支持和具体例子。",
+        "struggle_understanding_sentence_frames": "句型：",
+        "struggle_understanding_frame_1": "“当你[描述行动]时，接下来发生了什么？”",
+        "struggle_understanding_frame_2": "“你认为[其他学生/教室]在发生那件事时感觉如何？”",
+        "struggle_understanding_frame_3": "“还记得我们谈到每个人都需要感到安全吗？[行动]如何让其他人对安全感到不安？”",
+        "struggle_understanding_frame_4": "“让我们想想你当时需要什么。是想被倾听吗？还是需要空间？”",
+        "struggle_understanding_examples": "例子：",
+        "struggle_understanding_example_1": "“当你发出很大的噪音时，接下来发生了什么？其他人停止阅读了吗？”",
+        "struggle_understanding_example_2": "“你认为[其他学生姓名]在你没有问的情况下拿走他们的积木时感觉如何？他们是高兴还是悲伤？”",
+        "struggle_understanding_example_3": "“还记得我们谈到每个人都需要受到尊重吗？当你打断时，这如何让其他人对受到尊重感到不安？”",
+        "struggle_understanding_example_4": "“也许你需要活动一下身体。你如何在安静阅读时不发出噪音地做到这一点？”",
+        "struggle_understanding_after_support": "提供更多支持后：",
+        "struggle_understanding_button_impact": "Go back to Explore Impact<br>返回探讨影响",
+        "struggle_understanding_button_needs": "Go back to Connect to Needs<br>返回连接需求",
+        "struggle_understanding_note": "If they still struggle, consider using visual aids or role-playing, or seeking guidance from a colleague。",
+        "struggle_solutions_title": "12. Struggle with Solutions<br>12. 解决方案困难",
+        "struggle_solutions_intro": "If the student is having difficulty coming up with ideas or committing to a plan, offer gentle suggestions and support.<br>如果学生难以提出想法或承诺计划，请提供温和的建议和支持。",
+        "struggle_solutions_sentence_frames": "句型：",
+        "struggle_solutions_frame_1": "“如果我们尝试……会怎么样？”",
+        "struggle_solutions_frame_2": "“如果……会有帮助吗？”",
+        "struggle_solutions_frame_3": "“我们今天先试试这个计划，然后明天再谈谈怎么样？”",
+        "struggle_solutions_frame_4": "“这个计划的哪一部分让你觉得棘手？”",
+        "struggle_solutions_examples": "例子：",
+        "struggle_solutions_example_1": "“如果我们尝试在你感到愤怒时深呼吸三次，然后再说话，怎么样？”",
+        "struggle_solutions_example_2": "“如果我们有一个特殊的安静区域，你可以在需要休息时去那里，会有帮助吗？”",
+        "struggle_solutions_example_3": "“我们今天先试试这个计划，如果太难，我们明天可以讨论一个不同的想法，怎么样？”",
+        "struggle_solutions_example_4": "“这个计划的哪一部分让你觉得棘手？是记住在拿积木之前先问一下吗？”",
+        "struggle_solutions_after_suggestions": "提供建议后：",
+        "struggle_solutions_button_plan": "Go back to Make a Plan<br>返回制定计划",
+        "struggle_solutions_note": "If they still struggle, it might be helpful to involve a parent or guardian, or a trusted adult to brainstorm solutions together。"
+      }
+    };
+
+    let currentLanguageIndex = 0; // 0: en, 1: zh, 2: both
+    const languages = ["en", "zh", "both"];
+    const languageTitles = ["English", "中文", "English & 中文"]; // For accessibility title attribute
+
+    // Function to update text based on current language
+    function updateContentLanguage() {
+      const lang = languages[currentLanguageIndex];
+      // Update the document title
+      document.title = translations[lang]["header_title"].replace(/<br>/g, ' '); // Remove <br> for title
+
+      document.querySelectorAll('[data-key]').forEach(element => {
+        const key = element.getAttribute('data-key');
+        if (translations[lang] && translations[lang][key]) {
+          element.innerHTML = translations[lang][key];
+        }
+      });
+      // Update the title attribute for accessibility
+      document.getElementById('language-toggle').title = languageTitles[currentLanguageIndex];
+    }
+
+    // Function to toggle language
+    function toggleLanguage() {
+      currentLanguageIndex = (currentLanguageIndex + 1) % languages.length;
+      updateContentLanguage();
+      // Ensure the current section is re-displayed to apply language changes
+      const activeSection = document.querySelector('.guide-section.active, .intro-card.active');
+      if (activeSection) {
+        showSection(activeSection.id);
+      }
+    }
+
+    // Function to show a specific section and hide others
+    function showSection(sectionId) {
+      const sections = document.querySelectorAll('.guide-section, .intro-card');
+      sections.forEach(section => {
+        section.classList.remove('active');
+        section.style.display = 'none'; // Ensure display is none for hidden sections
+      });
+
+      const activeSection = document.getElementById(sectionId);
+      if (activeSection) {
+        activeSection.classList.add('active');
+        activeSection.style.display = 'block'; // Show the active section
+        window.scrollTo(0, 0); // Scroll to the top of the page
+      }
+      // Close the menu if open
+      const tocMenu = document.getElementById('toc-menu');
+      if (tocMenu.classList.contains('active')) {
+        tocMenu.classList.remove('active');
+      }
+      updateContentLanguage(); // Update language when section changes
+    }
+
+    // Function to hide the intro card and show the first guide section
+    function hideIntro() {
+      document.getElementById('intro-card').style.display = 'none';
+      showSection('prep'); // Show the first actual guide section
+    }
+
+    // Function to toggle the visibility of the TOC menu
+    function toggleMenu() {
+      const tocMenu = document.getElementById('toc-menu');
+      tocMenu.classList.toggle('active');
+    }
+
+    // Show the introduction card and set initial language when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      showSection('intro-card');
+      updateContentLanguage(); // Set initial language
+    });
+  </script>
+
+</body>
+
+</html>
