@@ -40,7 +40,6 @@
     .header h1 {
       margin: 0;
       font-size: 1.8em;
-      /* Smaller title */
       font-weight: bold;
     }
 
@@ -48,21 +47,17 @@
       display: flex;
       align-items: center;
       gap: 15px;
-      /* Space between icons */
     }
 
     /* General icon button styling */
     .icon-button {
       font-size: 1.8em;
-      /* Adjusted for icons */
       cursor: pointer;
       padding: 5px;
       border-radius: 5px;
       transition: background-color 0.3s ease;
       background-color: transparent;
-      /* No background by default */
       border: none;
-      /* No border by default */
       color: white;
     }
 
@@ -85,7 +80,6 @@
       justify-content: center;
       align-items: center;
       transform: translateX(100%);
-      /* Start off-screen */
       transition: transform 0.3s ease-in-out;
       z-index: 1000;
       padding: 20px;
@@ -116,7 +110,6 @@
       border-radius: 8px;
       transition: background-color 0.3s ease;
       display: block;
-      /* Make links block-level for larger touch target */
     }
 
     .toc-menu a:hover {
@@ -158,19 +151,15 @@
       margin-bottom: 20px;
     }
 
-    /* Main Guide Sections (no card decoration) */
     .guide-section {
       display: none;
       padding: 1rem;
-      /* Hidden by default */
       margin-bottom: 20px;
-      /* Keep margin for spacing */
       animation: fadeIn 0.5s ease-out;
     }
 
     .guide-section.active {
       display: block;
-      /* Show active section */
     }
 
     .guide-section h2 {
@@ -226,16 +215,12 @@
       padding-top: 20px;
       display: flex;
       flex-wrap: wrap;
-      /* Allow buttons to wrap on small screens */
       justify-content: center;
-      /* Center buttons */
       gap: 15px;
-      /* Space between buttons */
     }
 
     .button-group p {
       width: 100%;
-      /* Ensure text takes full width */
       text-align: center;
       margin-top: 15px;
       font-style: italic;
@@ -262,6 +247,7 @@
         padding: 0 15px;
         box-sizing: border-box;
       }
+
       .header {
         padding: 0.5rem 1rem;
       }
@@ -272,7 +258,6 @@
 
       .icon-button {
         font-size: 1.5em;
-        /* Smaller icons on mobile */
         padding: 5px;
       }
 
@@ -291,13 +276,11 @@
 
       button {
         width: 100%;
-        /* Full width buttons on small screens */
         margin-right: 0;
       }
 
       .button-group {
         flex-direction: column;
-        /* Stack buttons vertically */
         align-items: center;
       }
     }
@@ -341,7 +324,7 @@
 
   <!-- Introduction Card -->
   <div id="intro-card" class="intro-card">
-    <img src="./student-conference.jpg" class="intro-image" alt="Student conference">
+    <img src="./student-conference.webp" class="intro-image" alt="Student conference">
     <p data-key="intro_text"></p>
     <p data-key="worksheet_link"></p>
     <button onclick="hideIntro()" data-key="intro_button"></button>
@@ -795,6 +778,7 @@
         "toc_struggle_understanding": "11. 理解困难",
         "toc_struggle_solutions": "12. 解决方案困难",
         "intro_text": "本指南将帮助您与学生讨论他们的行为，并找到改进的方法。请遵循步骤，如果您需要做出选择，指南会告诉您下一步要进入哪个部分。",
+        "worksheet_link": "您需要一份<a href='./Individual reflection worksheet.pdf'>工作表</a>的打印件来与学生一起完成。",
         "intro_button": "明白了！开始指南",
         "prep_title": "1. 快速准备",
         "prep_intro": "在与学生交谈之前，请花点时间做好准备。",
