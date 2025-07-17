@@ -6,225 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title data-key="header_title"></title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <style>
-    /* Root variables for consistent theming, borrowing from restorative.html */
     :root {
       --primary-color: #E65100;
-      --background-color: #f4f4f4;
-      /* Light Grey */
-      --text-color: #333;
-      /* Dark Grey */
       --button-hover-color: #EF6C00;
-      /* Slightly lighter purple for hover */
-      --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      /* Subtle shadow */
-    }
-
-    /* Base body styling */
-    body {
-      font-family: 'Lexend', sans-serif;
-      line-height: 1.6;
-      padding: 0;
-      margin: auto;
-      background-color: var(--background-color);
-      color: var(--text-color);
-      overflow-x: hidden;
-      /* Prevent horizontal scrolling */
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      /* Ensure it takes full viewport height */
-    }
-
-    /* Header styling */
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem;
-      background-color: var(--primary-color);
-      color: white;
-      box-shadow: var(--box-shadow);
-    }
-
-    .header h1 {
-      margin: 0;
-      font-size: 1.8em;
-      font-weight: bold;
-      text-align: center;
-      flex-grow: 1;
-      /* Allows title to take available space */
-    }
-
-    .header-icons {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    /* General icon button styling */
-    .icon-button {
-      font-size: 1.8em;
-      cursor: pointer;
-      padding: 8px;
-      border-radius: 8px;
-      /* Rounded corners */
-      transition: background-color 0.3s ease;
-      background-color: transparent;
-      border: none;
-      color: white;
-    }
-
-    .icon-button:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-
-    /* Main content area */
-    .main-content {
-      flex-grow: 1;
-      /* Allows content to take available space */
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      /* Center vertically */
-      align-items: center;
-      /* Center horizontally */
-      padding: 20px;
-      text-align: center;
-    }
-
-    .intro-section {
-      max-width: 700px;
-      /* Limit width for readability */
-      animation: fadeIn 0.6s ease-out;
-    }
-
-    .intro-section img {
-      max-width: 100%;
-      height: auto;
-      margin: 0 auto 25px auto;
-      border-radius: 10px;
-      /* Rounded corners for image */
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .intro-section p {
-      font-size: 1.15em;
-      margin-bottom: 30px;
-      color: var(--text-color);
-    }
-
-    /* Buttons */
-    .button-group {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      /* Space between buttons */
-      margin-top: 20px;
-    }
-
-    .guide-button {
-      background-color: var(--primary-color);
-      color: white;
-      padding: 16px 30px;
-      border: none;
-      border-radius: 30px;
-      /* More rounded corners */
-      cursor: pointer;
-      font-size: 1.2em;
-      font-weight: bold;
-      text-decoration: none;
-      /* Remove underline from links */
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
-      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-      min-width: 250px;
-      /* Ensure buttons have a minimum width */
-      display: flex;
-      /* Use flex to center text vertically */
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-
-    .guide-button:hover {
-      background-color: var(--button-hover-color);
-      transform: translateY(-3px);
-      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
     }
 
     .button-icon {
       font-size: 1.5em;
       margin-right: 0.5rem;
-    }
-
-    /* Fade-in animation */
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(15px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-
-      .header h1 {
-        font-size: 1.6em;
-      }
-
-      .icon-button {
-        font-size: 1.6em;
-        padding: 6px;
-      }
-
-      .intro-section {
-        margin: 15px;
-        padding: 20px;
-      }
-
-      .intro-section p {
-        font-size: 1.05em;
-      }
-
-      .guide-button {
-        width: calc(100% - 20px);
-        /* Full width minus margin */
-        margin: 10px 0;
-        /* Stack buttons vertically */
-        font-size: 1.1em;
-        padding: 14px 25px;
-      }
-
-      .button-group {
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .header h1 {
-        font-size: 1.4em;
-      }
-
-      .icon-button {
-        font-size: 1.4em;
-      }
-
-      .intro-section p {
-        font-size: 1em;
-      }
-
-      .guide-button {
-        font-size: 1em;
-        padding: 12px 20px;
-      }
     }
   </style>
 </head>
@@ -234,27 +25,23 @@
   <div class="header">
     <h1 data-key="header_title"></h1>
     <div class="header-icons">
-      <!-- Language toggle button with Font Awesome icon -->
       <i id="language-toggle" class="fas fa-language icon-button" onclick="toggleLanguage()"
         title="Toggle Language"></i>
     </div>
   </div>
 
-  <div class="main-content">
-    <div class="intro-section">
-      <img src="./triumph.webp" alt="A student celebrating" />
-      <p data-key="intro_main_text"></p>
-      <div class="button-group">
-        <a href="./individual.html" class="guide-button"><i id="individual" class="fas fa-person button-icon"></i><span
-            data-key="individual_guide_button"></span></a>
-        <a href="./restorative.html" class="guide-button"><i id="restorative" class="fas fa-users button-icon"></i><span
-            data-key="restorative_guide_button"></span></a>
-      </div>
+  <div class="intro-card" id="intro-card">
+    <img src="./triumph.webp" alt="A student celebrating" class="intro-image" />
+    <p data-key="intro_main_text"></p>
+    <div class="button-group">
+      <a href="./individual.html" class="button"><i id="individual" class="fas fa-person button-icon"></i><span
+          data-key="individual_guide_button"></span></a>
+      <a href="./restorative.html" class="button"><i id="restorative" class="fas fa-users button-icon"></i><span
+          data-key="restorative_guide_button"></span></a>
     </div>
   </div>
 
   <script>
-    // Language data for English, Chinese, and a combined view
     const translations = {
       "en": {
         "header_title": "Student Intervention Guides",
