@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-key="header_title">Restorative Practice Guide</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Root variables for consistent theming */
+    :root {
+      --primary-color: #311B92;
+      --background-color: #f4f4f4;
+      --text-color: #333;
+      --button-hover-color: #4527A0;
+      --border-color: #ddd;
+      --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Base body styling */
+    body {
+      font-family: 'Lexend', sans-serif;
+      line-height: 1.6;
+      padding: 0;
+      margin: auto;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      overflow-x: hidden;
+      /* Prevent horizontal scrolling */
+    }
+
+    /* Header styling */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background-color: var(--primary-color);
+      color: white;
+      box-shadow: var(--box-shadow);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 1.8em;
+      font-weight: bold;
+      text-align: center;
+      flex-grow: 1;
+      /* Allows title to take available space */
+    }
+
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    /* General icon button styling */
+    .icon-button {
+      font-size: 1.8em;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      /* Rounded corners */
+      transition: background-color 0.3s ease;
+      background-color: transparent;
+      border: none;
+      color: white;
+    }
+
+    .icon-button:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Table of Contents (TOC) Menu */
+    .toc-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.95);
+      /* Darker overlay */
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transform: translateX(100%);
+      transition: transform 0.4s ease-in-out;
+      z-index: 1000;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .toc-menu.active {
+      transform: translateX(0);
+      /* Slide into view */
+    }
+
+    .toc-menu ul {
+      list-style: none;
+      padding: 0;
+      text-align: center;
+      width: 100%;
+      max-height: 80vh;
+      /* Limit height for scrollability on small screens */
+      overflow-y: auto;
+      /* Enable scrolling for long menus */
+    }
+
+    .toc-menu li {
+      margin-bottom: 0.7rem;
+    }
+
+    .toc-menu a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.6em;
+      padding: 12px 25px;
+      border-radius: 12px;
+      /* More rounded corners */
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      display: block;
+      font-weight: 500;
+    }
+
+    .toc-menu a:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .close-menu-icon {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 2.2em;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 10px;
+      /* Rounded corners */
+      transition: background-color 0.3s ease;
+    }
+
+    .close-menu-icon:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Introduction Card */
+    .intro-card {
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .intro-card img {
+      max-width: 600px;
+      height: auto;
+      margin: 0 auto 20px auto;
+      border-radius: 10px;
+      /* Rounded corners for image */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .intro-card p {
+      font-size: 1.1em;
+      margin-bottom: 20px;
+      color: var(--text-color);
+    }
+
+    .intro-card a {
+      color: var(--primary-color);
+      text-decoration: underline;
+      font-weight: bold;
+    }
+
+    /* Guide Section styling */
+    .guide-section {
+      display: none;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .guide-section.active {
+      display: block;
+    }
+
+    .guide-section h2 {
+      font-size: 1.8em;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+      border-bottom: 3px solid var(--primary-color);
+      padding-bottom: 8px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .guide-section h3 {
+      font-size: 1.4em;
+      margin-top: 30px;
+      margin-bottom: 12px;
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+
+    .guide-section p {
+      margin-bottom: 15px;
+      font-size: 1.05em;
+      color: var(--text-color);
+    }
+
+    .guide-section ul {
+      list-style: disc;
+      margin-left: 25px;
+      margin-bottom: 20px;
+      color: var(--text-color);
+    }
+
+    .guide-section li {
+      margin-bottom: 10px;
+      font-size: 1em;
+    }
+
+    /* Buttons */
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 14px 25px;
+      border: none;
+      border-radius: 30px;
+      /* More rounded corners */
+      cursor: pointer;
+      margin: 10px;
+      /* Adjusted margin for button groups */
+      font-size: 1.1em;
+      font-weight: bold;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      min-width: 180px;
+      /* Ensure buttons have a minimum width */
+    }
+
+    button:hover {
+      background-color: var(--button-hover-color);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .button-group {
+      margin-top: 30px;
+      border-top: 1px solid var(--border-color);
+      padding-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      /* Space between buttons */
+    }
+
+    .button-group p {
+      width: 100%;
+      text-align: center;
+      margin-top: 15px;
+      font-style: italic;
+      color: #666;
+      font-size: 0.95em;
+    }
+
+    /* Fade-in animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+
+      .header h1 {
+        font-size: 1.6em;
+      }
+
+      .icon-button {
+        font-size: 1.6em;
+        padding: 6px;
+      }
+
+      .toc-menu a {
+        font-size: 1.4em;
+        padding: 10px 20px;
+      }
+
+      .close-menu-icon {
+        font-size: 2em;
+      }
+
+      .intro-card,
+      .guide-section {
+        margin: 15px;
+        padding: 20px;
+      }
+
+      .guide-section h2 {
+        font-size: 1.6em;
+      }
+
+      .guide-section h3 {
+        font-size: 1.2em;
+      }
+
+      button {
+        width: calc(100% - 20px);
+        /* Full width minus margin */
+        margin: 10px 0;
+        /* Stack buttons vertically */
+      }
+
+      .button-group {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .intro-card img {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header h1 {
+        font-size: 1.4em;
+      }
+
+      .icon-button {
+        font-size: 1.4em;
+      }
+
+      .toc-menu a {
+        font-size: 1.2em;
+      }
+
+      .guide-section h2 {
+        font-size: 1.4em;
+      }
+
+      .guide-section h3 {
+        font-size: 1.1em;
+      }
+
+      .intro-card p,
+      .guide-section p,
+      .guide-section li {
+        font-size: 0.95em;
+      }
+
+      button {
+        font-size: 1em;
+        padding: 12px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <h1 data-key="header_title"></h1>
+    <div class="header-icons">
+      <!-- Language toggle button with Font Awesome icon -->
+      <i id="language-toggle" class="fas fa-language icon-button" onclick="toggleLanguage()"
+        title="Toggle Language"></i>
+      <i class="fas fa-bars hamburger-icon icon-button" onclick="toggleMenu()"></i>
+    </div>
+  </div>
+
+  <!-- Table of Contents Menu -->
+  <nav id="toc-menu" class="toc-menu">
+    <i class="fas fa-times close-menu-icon" onclick="toggleMenu()"></i>
+    <ul>
+      <li><a href="#" onclick="showSection('intro-card'); return false;" data-key="toc_intro"></a></li>
+      <li><a href="#" onclick="showSection('prep'); return false;" data-key="toc_prep"></a></li>
+      <li><a href="#" onclick="showSection('tell-story'); return false;" data-key="toc_tell_story"></a></li>
+      <li><a href="#" onclick="showSection('feelings'); return false;" data-key="toc_feelings"></a></li>
+      <li><a href="#" onclick="showSection('needs'); return false;" data-key="toc_needs"></a></li>
+      <li><a href="#" onclick="showSection('repair'); return false;" data-key="toc_repair"></a></li>
+      <li><a href="#" onclick="showSection('follow-up'); return false;" data-key="toc_follow_up"></a></li>
+      <li><a href="#" onclick="showSection('unwilling'); return false;" data-key="toc_unwilling"></a></li>
+      <li><a href="#" onclick="showSection('struggle-feelings'); return false;" data-key="toc_struggle_feelings"></a>
+      </li>
+      <li><a href="#" onclick="showSection('struggle-needs'); return false;" data-key="toc_struggle_needs"></a></li>
+      <li><a href="#" onclick="showSection('struggle-solutions'); return false;" data-key="toc_struggle_solutions"></a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Introduction Card -->
+  <div id="intro-card" class="intro-card">
+    <img src="./handshake.webp" class="intro-image" alt="Students shaking hands">
+    <p data-key="intro_text"></p>
+    <p data-key="worksheet_link"></p>
+    <button onclick="hideIntro()" data-key="intro_button"></button>
+  </div>
+
+  <!-- Section 1: Quick Prep -->
+  <div id="prep" class="guide-section">
+    <h2 data-key="prep_title"></h2>
+    <p data-key="prep_intro"></p>
+    <ul>
+      <li data-key="prep_li_1"></li>
+      <li data-key="prep_li_2"></li>
+      <li data-key="prep_li_3"></li>
+    </ul>
+
+    <h3 data-key="prep_h3"></h3>
+    <p data-key="prep_invite_text"></p>
+    <p data-key="prep_suggested_phrasing"></p>
+    <ul>
+      <li data-key="prep_phrase_1"></li>
+      <li data-key="prep_phrase_2"></li>
+    </ul>
+    <div class="button-group">
+      <button onclick="showSection('tell-story')" data-key="prep_button"></button>
+    </div>
+  </div>
+
+  <!-- Section 2: Tell Me What Happened -->
+  <div id="tell-story" class="guide-section">
+    <h2 data-key="tell_story_title"></h2>
+    <p data-key="tell_story_intro"></p>
+    <p data-key="tell_story_teacher_prompt"></p>
+    <ul>
+      <li data-key="tell_story_example_1"></li>
+      <li data-key="tell_story_example_2"></li>
+    </ul>
+    <p data-key="tell_story_listen_active"></p>
+    <p data-key="tell_story_question"></p>
+    <div class="button-group">
+      <button onclick="showSection('feelings')" data-key="tell_story_button_yes"></button>
+      <button onclick="showSection('unwilling')" data-key="tell_story_button_no"></button>
+    </div>
+  </div>
+
+  <!-- Section 3: How Did That Make You Feel? -->
+  <div id="feelings" class="guide-section">
+    <h2 data-key="feelings_title"></h2>
+    <p data-key="feelings_intro"></p>
+    <p data-key="feelings_teacher_prompt"></p>
+    <ul>
+      <li data-key="feelings_example_1"></li>
+      <li data-key="feelings_example_2"></li>
+    </ul>
+    <p data-key="feelings_listen"></p>
+    <p data-key="feelings_question"></p>
+    <div class="button-group">
+      <button onclick="showSection('needs')" data-key="feelings_button_yes"></button>
+      <button onclick="showSection('struggle-feelings')" data-key="feelings_button_no"></button>
+    </div>
+  </div>
+
+  <!-- Section 4: What Do You Need Now? -->
+  <div id="needs" class="guide-section">
+    <h2 data-key="needs_title"></h2>
+    <p data-key="needs_intro"></p>
+    <p data-key="needs_teacher_prompt"></p>
+    <ul>
+      <li data-key="needs_example_1"></li>
+      <li data-key="needs_example_2"></li>
+      <li data-key="needs_example_3"></li>
+    </ul>
+    <p data-key="needs_question"></p>
+    <div class="button-group">
+      <button onclick="showSection('repair')" data-key="needs_button_yes"></button>
+      <button onclick="showSection('struggle-needs')" data-key="needs_button_no"></button>
+    </div>
+  </div>
+
+  <!-- Section 5: What Can We Do to Make Things Right? -->
+  <div id="repair" class="guide-section">
+    <h2 data-key="repair_title"></h2>
+    <p data-key="repair_intro"></p>
+    <p data-key="repair_teacher_prompt_1"></p>
+    <ul>
+      <li data-key="repair_example_1"></li>
+      <li data-key="repair_example_2"></li>
+      <li data-key="repair_example_3"></li>
+    </ul>
+    <p data-key="repair_teacher_prompt_2"></p>
+    <p data-key="repair_question"></p>
+    <div class="button-group">
+      <button onclick="showSection('follow-up')" data-key="repair_button_yes"></button>
+      <button onclick="showSection('struggle-solutions')" data-key="repair_button_no"></button>
+    </div>
+  </div>
+
+  <!-- Section 6: Follow Up -->
+  <div id="follow-up" class="guide-section">
+    <h2 data-key="follow_up_title"></h2>
+    <p data-key="follow_up_intro"></p>
+    <ul>
+      <li data-key="follow_up_example_1"></li>
+      <li data-key="follow_up_example_2"></li>
+      <li data-key="follow_up_example_3"></li>
+    </ul>
+    <p data-key="follow_up_complete"></p>
+    <div class="button-group">
+      <button onclick="showSection('intro-card')" data-key="follow_up_button"></button>
+    </div>
+  </div>
+
+  <!-- Branching Section: Unwilling to Respond -->
+  <div id="unwilling" class="guide-section">
+    <h2 data-key="unwilling_title"></h2>
+    <p data-key="unwilling_intro"></p>
+    <p data-key="unwilling_teacher_prompt"></p>
+    <ul>
+      <li data-key="unwilling_example_1"></li>
+      <li data-key="unwilling_example_2"></li>
+      <li data-key="unwilling_example_3"></li>
+    </ul>
+    <p data-key="unwilling_after_space"></p>
+    <div class="button-group">
+      <button onclick="showSection('tell-story')" data-key="unwilling_button_back"></button>
+      <p data-key="unwilling_note"></p>
+    </div>
+  </div>
+
+  <!-- Branching Section: Struggle with Feelings -->
+  <div id="struggle-feelings" class="guide-section">
+    <h2 data-key="struggle_feelings_title"></h2>
+    <p data-key="struggle_feelings_intro"></p>
+    <p data-key="struggle_feelings_teacher_prompt"></p>
+    <ul>
+      <li data-key="struggle_feelings_example_1"></li>
+      <li data-key="struggle_feelings_example_2"></li>
+      <li data-key="struggle_feelings_example_3"></li>
+    </ul>
+    <p data-key="struggle_feelings_after_support"></p>
+    <div class="button-group">
+      <button onclick="showSection('feelings')" data-key="struggle_feelings_button_back"></button>
+      <p data-key="struggle_feelings_note"></p>
+    </div>
+  </div>
+
+  <!-- Branching Section: Struggle with Needs -->
+  <div id="struggle-needs" class="guide-section">
+    <h2 data-key="struggle_needs_title"></h2>
+    <p data-key="struggle_needs_intro"></p>
+    <p data-key="struggle_needs_teacher_prompt"></p>
+    <ul>
+      <li data-key="struggle_needs_example_1"></li>
+      <li data-key="struggle_needs_example_2"></li>
+      <li data-key="struggle_needs_example_3"></li>
+    </ul>
+    <p data-key="struggle_needs_after_support"></p>
+    <div class="button-group">
+      <button onclick="showSection('needs')" data-key="struggle_needs_button_back"></button>
+      <p data-key="struggle_needs_note"></p>
+    </div>
+  </div>
+
+  <!-- Branching Section: Struggle with Solutions -->
+  <div id="struggle-solutions" class="guide-section">
+    <h2 data-key="struggle_solutions_title"></h2>
+    <p data-key="struggle_solutions_intro"></p>
+    <p data-key="struggle_solutions_teacher_prompt"></p>
+    <ul>
+      <li data-key="struggle_solutions_example_1"></li>
+      <li data-key="struggle_solutions_example_2"></li>
+      <li data-key="struggle_solutions_example_3"></li>
+    </ul>
+    <p data-key="struggle_solutions_after_suggestions"></p>
+    <div class="button-group">
+      <button onclick="showSection('repair')" data-key="struggle_solutions_button_back"></button>
+      <p data-key="struggle_solutions_note"></p>
+    </div>
+  </div>
+
+
+  <script>
+    // Language data for English, Chinese, and a combined view
+    const translations = {
+      "en": {
+        "header_title": "Restorative Practice Guide",
+        "toc_intro": "Introduction",
+        "toc_prep": "1. Quick Prep",
+        "toc_tell_story": "2. Tell Me What Happened",
+        "toc_feelings": "3. How Did That Make You Feel?",
+        "toc_needs": "4. What Do You Need Now?",
+        "toc_repair": "5. Make Things Right",
+        "toc_follow_up": "6. Follow Up",
+        "toc_unwilling": "Branch: Unwilling to Respond",
+        "toc_struggle_feelings": "Branch: Struggle with Feelings",
+        "toc_struggle_needs": "Branch: Struggle with Needs",
+        "toc_struggle_solutions": "Branch: Struggle with Solutions",
+
+        "intro_text": "This guide helps Grade 2 teachers facilitate restorative conversations when students are struggling to resolve conflicts on their own. The goal is for students to understand each other's feelings and needs, and then take their own action to repair damaged relationships. This guide provides clear instructions, sentence structures, and examples useful in various interventions. While you, the teacher, will moderate, the real work will be done by the students themselves. The guide also includes branching to help you take appropriate action based on student responses.",
+        "worksheet_link": "You might find it helpful to have a simple <a href='#' onclick='event.preventDefault(); alert(\"Worksheet not available in this demo. Please imagine a simple reflection worksheet here.\");'>reflection worksheet</a> for students to jot down their thoughts, though it's not strictly required.",
+        "intro_button": "Start Intervention Guide",
+
+        "prep_title": "1. Quick Prep",
+        "prep_intro": "Before you begin the conversation, take a moment to prepare yourself and the environment.",
+        "prep_li_1": "Take a deep, calming breath. Your calm presence helps students feel safe.",
+        "prep_li_2": "Remind yourself of the student's positive qualities. This helps maintain a positive mindset.",
+        "prep_li_3": "Find a quiet, private space where you can talk without interruptions. This ensures focus and confidentiality.",
+        "prep_h3": "Inviting the Students",
+        "prep_invite_text": "Once you are ready, invite the students involved in the conflict to join you. Your invitation should be clear, calm, and neutral.",
+        "prep_suggested_phrasing": "Suggested Phrasings:",
+        "prep_phrase_1": "\"Hi [Student A] and [Student B], when you're ready, I'd like to talk with both of you for a few minutes in [mention the quiet spot, e.g., 'the calm corner' or 'just outside the door']. We can talk about what happened and how to make things better.\" (Address both students equally).",
+        "prep_phrase_2": "\"Hello [Student A] and [Student B], I noticed something just now, and I'd like to understand it better. Can you come with me to [mention the quiet spot] for a quick chat when you're ready?\" (Use a neutral tone).",
+        "prep_button": "Ready to Begin",
+
+        "tell_story_title": "2. Tell Me What Happened",
+        "tell_story_intro": "This is the first step in understanding the conflict. Give each student an uninterrupted chance to share their perspective. Emphasize listening respectfully.",
+        "tell_story_teacher_prompt": "Teacher Prompt: \"I see there's a problem here. Can you tell me what happened from your point of view? [Student A], you can start. Then, [Student B] will have a turn to share.\" (Ensure equal turns).",
+        "tell_story_example_1": "What did you see or hear?",
+        "tell_story_example_2": "What were you doing at that moment?",
+        "tell_story_listen_active": "Listen actively: Maintain eye contact, nod, and show you are fully present. Avoid interrupting or correcting. Let each student speak until they are finished.",
+        "tell_story_question": "Did both students share their story and seem willing to engage?",
+        "tell_story_button_yes": "Yes, they shared",
+        "tell_story_button_no": "No, one or both are unwilling",
+
+        "feelings_title": "3. How Did That Make You Feel?",
+        "feelings_intro": "Help students connect their actions or the actions of others to their emotions. This is crucial for building empathy and understanding.",
+        "feelings_teacher_prompt": "Teacher Prompt: \"Thank you for sharing. Now, [Student A], when that happened, how did that make *you* feel inside?\" (Repeat for Student B).",
+        "feelings_example_1": "What feelings did you have in your heart or body?",
+        "feelings_example_2": "Were you feeling happy, sad, angry, surprised, or something else?",
+        "feelings_listen": "Listen carefully to their emotional responses. Validate their feelings without judgment.",
+        "feelings_question": "Did students express their feelings, even if with some help?",
+        "feelings_button_yes": "Yes, they expressed feelings",
+        "feelings_button_no": "No, they struggled to express feelings",
+
+        "needs_title": "4. What Do You Need Now?",
+        "needs_intro": "Guide students to identify what they need to feel better, safe, or to move past the conflict. This shifts focus from blame to resolution.",
+        "needs_teacher_prompt": "Teacher Prompt: \"Thank you for sharing your feelings. Now, [Student A], what do *you* need right now to make things better for you?\" (Repeat for Student B).",
+        "needs_example_1": "What do you need from [other student's name]?",
+        "needs_example_2": "What would help you feel safe or happy again?",
+        "needs_example_3": "What do you need to happen so we can all move forward?",
+        "needs_question": "Did students clearly state their needs, or did they focus on punishment?",
+        "needs_button_yes": "Yes, they stated needs",
+        "needs_button_no": "No, they struggled or wanted punishment",
+
+        "repair_title": "5. What Can We Do to Make Things Right?",
+        "repair_intro": "This is the core of restorative practice: empowering students to take responsibility and propose solutions to repair any harm caused.",
+        "repair_teacher_prompt_1": "Teacher Prompt (to the student who caused harm, if applicable, or both): \"Knowing how [other student] feels and what they need, what can *you* do to make things right or help them feel better?\"",
+        "repair_example_1": "What is one thing you can do to help [other student] feel better?",
+        "repair_example_2": "What could you do differently next time if something similar happens?",
+        "repair_example_3": "How can we fix this together?",
+        "repair_teacher_prompt_2": "Teacher Prompt (to the student who was harmed): \"Does that sound like something that would help you feel better or make things right?\"",
+        "repair_question": "Did students agree on a specific plan to make things right?",
+        "repair_button_yes": "Yes, they agreed on a plan",
+        "repair_button_no": "No, they struggled to find solutions or agree",
+
+        "follow_up_title": "6. Follow Up",
+        "follow_up_intro": "After the conversation and agreed-upon actions, it's important to follow up to ensure the plan is working and relationships are healing.",
+        "follow_up_example_1": "Check in with both students individually a little later: \"How are things going with [other student's name] now?\"",
+        "follow_up_example_2": "Ask: \"Did our plan help you feel better or make things better?\"",
+        "follow_up_example_3": "If needed, offer continued support: \"Remember, I'm here if you need to talk again or if the plan isn't working.\"",
+        "follow_up_complete": "The restorative conversation process is complete for now. Celebrate their effort and growth!",
+        "follow_up_button": "Start a New Intervention",
+
+        "unwilling_title": "Branch: Unwilling to Respond",
+        "unwilling_intro": "If a student is unwilling to share or engage, it's important not to force them. Give them space and try again later, building trust.",
+        "unwilling_teacher_prompt": "Teacher Prompt: \"It looks like you're not ready to talk right now, and that's okay. I'm here when you are ready to talk about what happened. We can try again in a little while.\"",
+        "unwilling_example_1": "Offer a choice: \"Would you like to talk now, or would you like a few minutes to think and we can talk after our next activity?\"",
+        "unwilling_example_2": "Acknowledge their feelings: \"I can see you might be feeling upset/shy. It's okay to feel that way. When you're ready, we can talk.\"",
+        "unwilling_example_3": "Set a clear time: \"We can try again after recess. I'll check in with you then.\"",
+        "unwilling_after_space": "After giving them space (e.g., 15-30 minutes or after a break), gently try to re-engage. If they remain unwilling after a second attempt, consider involving a school counselor or another trusted adult.",
+        "unwilling_button_back": "Try 'Tell Me What Happened' again",
+        "unwilling_note": "If a student consistently refuses to engage, it may indicate a deeper issue requiring additional support.",
+
+        "struggle_feelings_title": "Branch: Struggle with Feelings",
+        "struggle_feelings_intro": "If students are having difficulty identifying or expressing their feelings, provide more explicit support and simple vocabulary.",
+        "struggle_feelings_teacher_prompt": "Teacher Prompt: \"It can be hard to find the right words for feelings. Let's try some feeling words together. Were you feeling...\"",
+        "struggle_feelings_example_1": "Happy? Sad? Angry? Scared? Worried? Confused?",
+        "struggle_feelings_example_2": "How did your body feel? Did your tummy feel funny? Did your hands feel tight?",
+        "struggle_feelings_example_3": "If [other student] did that to me, I might feel a little [sad/frustrated]. Is that how you felt?",
+        "struggle_feelings_after_support": "After offering support and examples, gently guide them back to expressing their feelings. You might need to model empathy.",
+        "struggle_feelings_button_back": "Go back to 'How Did That Make You Feel?'",
+        "struggle_feelings_note": "Consider using a feelings chart or pictures of faces expressing emotions to help younger students.",
+
+        "struggle_needs_title": "Branch: Struggle with Needs",
+        "struggle_needs_intro": "If students struggle to articulate their needs or focus on punishment, redirect them gently to what would help them feel better or safe.",
+        "struggle_needs_teacher_prompt": "Teacher Prompt: \"I hear you're upset. Our goal here is to help everyone feel better and make things right. What do *you* need so you can feel safe/happy/okay again?\"",
+        "struggle_needs_example_1": "Do you need an apology? Do you need [other student] to do something different next time?",
+        "struggle_needs_example_2": "Do you need to play alone for a bit, or do you need to talk about it more?",
+        "struggle_needs_example_3": "What would make this situation feel fair or good for you?",
+        "struggle_needs_after_support": "After providing concrete suggestions, encourage them to choose what feels right for them. Remind them that needs are about feeling safe and respected.",
+        "struggle_needs_button_back": "Go back to 'What Do You Need Now?'",
+        "struggle_needs_note": "If a student insists on punishment, explain that restorative practice focuses on repairing harm, not just consequences. You can address consequences separately if needed.",
+
+        "struggle_solutions_title": "Branch: Struggle with Solutions",
+        "struggle_solutions_intro": "If students are having difficulty brainstorming solutions or agreeing on a plan, offer gentle suggestions and guide them toward actionable steps.",
+        "struggle_solutions_teacher_prompt": "Teacher Prompt: \"It can be tricky to think of solutions. Let's brainstorm together. What if we tried...?\"",
+        "struggle_solutions_example_1": "What if we tried taking turns with the toy?",
+        "struggle_solutions_example_2": "Would it help if you said 'excuse me' before interrupting?",
+        "struggle_solutions_example_3": "How about we try this plan for today, and then we can talk about it again tomorrow?",
+        "struggle_solutions_after_suggestions": "After offering suggestions, encourage students to pick a solution they feel they can commit to. Emphasize that the plan should be about making things better.",
+        "struggle_solutions_button_back": "Go back to 'What Can We Do to Make Things Right?'",
+        "struggle_solutions_note": "If no agreement is reached after significant effort, it may be necessary to implement a temporary teacher-directed solution and revisit the conversation later."
+      },
+      "zh": {
+        "header_title": "恢复性实践干预",
+        "toc_intro": "介绍",
+        "toc_prep": "1. 快速准备",
+        "toc_tell_story": "2. 告诉我发生了什么",
+        "toc_feelings": "3. 那让你感觉如何？",
+        "toc_needs": "4. 你现在需要什么？",
+        "toc_repair": "5. 纠正错误",
+        "toc_follow_up": "6. 后续跟进",
+        "toc_unwilling": "分支：不愿回应",
+        "toc_struggle_feelings": "分支：表达感受困难",
+        "toc_struggle_needs": "分支：表达需求困难",
+        "toc_struggle_solutions": "分支：寻找解决方案困难",
+
+        "intro_text": "本指南旨在帮助二年级教师在学生难以自行解决冲突时，促进恢复性对话。目标是让学生理解彼此的感受和需求，然后主动采取行动修复受损的关系。本指南提供了清晰的说明、句子结构和在各种干预中都有用的例子。虽然您作为老师将担任主持人，但真正的工作将由学生自己完成。本指南还包括分支，以帮助您根据学生的反应采取适当的行动。",
+        "worksheet_link": "您可能会发现准备一份简单的<a href='#' onclick='event.preventDefault(); alert(\"本演示中不提供工作表。请想象这里有一份简单的反思工作表。\");'>反思工作表</a>对学生记录他们的想法很有帮助，尽管这不是严格要求。",
+        "intro_button": "开始干预指南",
+
+        "prep_title": "1. 快速准备",
+        "prep_intro": "在开始对话之前，花一点时间准备自己和环境。",
+        "prep_li_1": "深呼吸，保持冷静。您的冷静存在有助于学生感到安全。",
+        "prep_li_2": "提醒自己学生的优点。这有助于保持积极的心态。",
+        "prep_li_3": "找一个安静、私密的空间，在那里您可以不受打扰地交谈。这确保了专注和保密性。",
+        "prep_h3": "邀请学生",
+        "prep_invite_text": "准备好后，邀请参与冲突的学生加入您。您的邀请应该清晰、冷静和中立。",
+        "prep_suggested_phrasing": "建议措辞：",
+        "prep_phrase_1": "“嗨，[学生 A] 和 [学生 B]，准备好后，我想和你们俩在[提到安静的地方，例如，‘平静角’或‘门外’]谈几分钟。我们可以谈谈发生了什么以及如何让事情变得更好。”（平等对待两位学生）。",
+        "prep_phrase_2": "“你好，[学生 A] 和 [学生 B]，我刚才注意到一些事情，我想更好地了解它。你准备好后能和我一起到[提到安静的地方]快速聊一下吗？”（使用中立的语气）。",
+        "prep_button": "准备开始",
+
+        "tell_story_title": "2. 告诉我发生了什么",
+        "tell_story_intro": "这是理解冲突的第一步。给每个学生一个不被打断的机会分享他们的观点。强调尊重地倾听。",
+        "tell_story_teacher_prompt": "老师提示：“我看到这里有问题。你能从你的角度告诉我发生了什么吗？[学生 A]，你可以开始。然后，[学生 B] 将有机会分享。”（确保轮流平等）。",
+        "tell_story_example_1": "你看到或听到了什么？",
+        "tell_story_example_2": "你当时在做什么？",
+        "tell_story_listen_active": "积极倾听：保持眼神交流，点头，并表明您全神贯注。避免打断或纠正。让每个学生说完。",
+        "tell_story_question": "两位学生都分享了他们的故事并似乎愿意参与吗？",
+        "tell_story_button_yes": "是的，他们分享了",
+        "tell_story_button_no": "不，一个或两个都不愿意",
+
+        "feelings_title": "3. 那让你感觉如何？",
+        "feelings_intro": "帮助学生将他们的行为或他人的行为与他们的情绪联系起来。这对于培养同理心和理解至关重要。",
+        "feelings_teacher_prompt": "老师提示：“谢谢分享。现在，[学生 A]，当那件事发生时，那让你内心感觉如何？”（对学生 B 重复）。",
+        "feelings_example_1": "你的内心或身体有什么感受？",
+        "feelings_example_2": "你当时是感到高兴、悲伤、愤怒、惊讶，还是其他什么？",
+        "feelings_listen": "仔细倾听他们的情绪反应。不带评判地肯定他们的感受。",
+        "feelings_question": "学生是否表达了他们的感受，即使需要一些帮助？",
+        "feelings_button_yes": "是的，他们表达了感受",
+        "feelings_button_no": "不，他们难以表达感受",
+
+        "needs_title": "4. 你现在需要什么？",
+        "needs_intro": "引导学生确定他们需要什么才能感觉更好、安全，或者摆脱冲突。这会将焦点从指责转移到解决问题。",
+        "needs_teacher_prompt": "老师提示：“谢谢分享你的感受。现在，[学生 A]，你现在需要什么才能让你感觉更好？”（对学生 B 重复）。",
+        "needs_example_1": "你需要[其他学生姓名]做什么？",
+        "needs_example_2": "什么能帮助你再次感到安全或快乐？",
+        "needs_example_3": "我们需要发生什么才能让我们都向前迈进？",
+        "needs_question": "学生是否清楚地表达了他们的需求，或者他们是否专注于惩罚？",
+        "needs_button_yes": "是的，他们表达了需求",
+        "needs_button_no": "不，他们难以表达或想要惩罚",
+
+        "repair_title": "5. 我们能做些什么来纠正错误？",
+        "repair_intro": "这是恢复性实践的核心：赋能学生承担责任并提出解决方案来修复造成的任何伤害。",
+        "repair_teacher_prompt_1": "老师提示（对造成伤害的学生，如果适用，或两者）：“知道了[其他学生]的感受和需求，你能做些什么来纠正错误或帮助他们感觉更好？”",
+        "repair_example_1": "你能做的一件事是什么来帮助[其他学生]感觉更好？",
+        "repair_example_2": "下次发生类似情况时，你可以怎么做不同？",
+        "repair_example_3": "我们如何一起解决这个问题？",
+        "repair_teacher_prompt_2": "老师提示（对受伤害的学生）：“这听起来能帮助你感觉更好或纠正错误吗？”",
+        "repair_question": "学生是否就纠正错误的具体计划达成一致？",
+        "repair_button_yes": "是的，他们同意了计划",
+        "repair_button_no": "不，他们难以找到解决方案或达成一致",
+
+        "follow_up_title": "6. 后续跟进",
+        "follow_up_intro": "在对话和商定的行动之后，进行后续跟进以确保计划正在奏效并且关系正在修复是很重要的。",
+        "follow_up_example_1": "稍后分别与两位学生核实：“现在和[其他学生姓名]相处得怎么样？”",
+        "follow_up_example_2": "询问：“我们的计划帮助你感觉更好或让事情变得更好了吗？”",
+        "follow_up_example_3": "如果需要，提供持�����支持：“记住，如果你需要再次交谈或计划不起作用，我在这里。”",
+        "follow_up_complete": "恢复性对话过程暂时完成。庆祝他们的努力和成长！",
+        "follow_up_button": "开始新的干预",
+
+        "unwilling_title": "分支：不愿回应",
+        "unwilling_intro": "如果学生不愿分享或参与，重要的是不要强迫他们。给他们空间，稍后再试，建立信任。",
+        "unwilling_teacher_prompt": "老师提示：“你现在似乎还没有准备好交谈，没关系。当你准备好谈论发生的事情时，我在这里。我们可以过一会儿再试。”",
+        "unwilling_example_1": "提供一个选择：“你现在想谈谈，还是想思考几分钟，我们可以在下一个活动之后再谈？”",
+        "unwilling_example_2": "承认他们的感受：“我看得出你可能感到不高兴/害羞。有这种感觉没关系。当你准备好时，我们可以谈谈。”",
+        "unwilling_example_3": "设定一个明确的时间：“我们可以在课间休息后再试。届时我会和你核实。”",
+        "unwilling_after_space": "在给他们空间（例如，15-30分钟或休息后）后，轻轻地尝试重新接触。如果他们第二次尝试后仍然不愿参与，请考虑让学校辅导员或其他值得信任的成年人介入。",
+        "unwilling_button_back": "再次尝试“告诉我发生了什么”",
+        "unwilling_note": "如果学生持续拒绝参与，可能表明存在需要额外支持的更深层问题。",
+
+        "struggle_feelings_title": "分支：表达感受困难",
+        "struggle_feelings_intro": "如果学生难以识别或表达他们的感受，请提供更明确的支持和简单的词汇。",
+        "struggle_feelings_teacher_prompt": "老师提示：“找到表达感受的正确词语可能很难。让我们一起尝试一些感受词。你当时是感到……”",
+        "struggle_feelings_example_1": "高兴？悲伤？愤怒？害怕？担心？困惑？",
+        "struggle_feelings_example_2": "你的身体感觉如何？你的肚子感觉奇怪吗？你的手感觉紧绷吗？",
+        "struggle_feelings_example_3": "如果[其他学生]那样对我，我可能会有点[悲伤/沮丧]。你是那样感觉的吗？",
+        "struggle_feelings_after_support": "在提供支持和例子后，轻轻引导他们回到表达感受。您可能需要示范同理心。",
+        "struggle_feelings_button_back": "返回“那让你感觉如何？”",
+        "struggle_feelings_note": "考虑使用情绪图表或表达情绪的面部图片来帮助年幼的学生。",
+
+        "struggle_needs_title": "分支：表达需求困难",
+        "struggle_needs_intro": "如果学生难以表达他们的需求或专注于惩罚，请轻轻地引导他们回到什么能帮助他们感觉更好或安全。",
+        "struggle_needs_teacher_prompt": "老师提示：“我听到你不高兴。我们这里的目标是帮助每个人感觉更好并纠正错误。你需要什么才能让你再次感到安全/快乐/好？”",
+        "struggle_needs_example_1": "你需要道歉吗？你需要[其他学生]下次做些什么不同吗？",
+        "struggle_needs_example_2": "你需要独自玩一会儿，还是需要更多地谈论它？",
+        "struggle_needs_example_3": "什么能让这种情况对你来说感觉公平或好？",
+        "struggle_needs_after_support": "在提供具体建议后，鼓励他们选择对他们来说感觉正确的东西。提醒他们，需求是关于感到安全和受到尊重。",
+        "struggle_needs_button_back": "返回“你现在需要什么？”",
+        "struggle_needs_note": "如果学生坚持惩罚，请解释恢复性实践侧重于修复伤害，而不仅仅是后果。如果需要，您可以单独处理后果。",
+
+        "struggle_solutions_title": "分支：寻找解决方案困难",
+        "struggle_solutions_intro": "如果学生难以集思广益或就计划达成一致，请提供温和的建议并引导他们采取可行的步骤。",
+        "struggle_solutions_teacher_prompt": "老师提示：“想出解决方案可能很棘手。让我们一起集思广益。如果我们尝试……会怎么样？”",
+        "struggle_solutions_example_1": "如果我们尝试轮流玩玩具呢？",
+        "struggle_solutions_example_2": "如果你在打断之前说“对不起”会有帮助吗？",
+        "struggle_solutions_example_3": "我们今天先试试这个计划，然后明天再谈谈怎么样？",
+        "struggle_solutions_after_suggestions": "在提供建议后，鼓励学生选择他们认为可以承诺的解决方案。强调计划应该是为了让事情变得更好。",
+        "struggle_solutions_button_back": "返回“我们能做些什么来纠正错误？”",
+        "struggle_solutions_note": "如果在付出巨大努力后仍未达成协议，可能需要实施临时的教师指导解决方案，稍后再重新讨论。"
+      },
+    };
+
+    let currentLanguageIndex = 0; // 0: en, 1: zh, 2: both
+    const languages = ["en", "zh"];
+    const languageTitles = ["English", "中文"]; // For accessibility title attribute
+
+    // Function to update text based on current language
+    function updateContentLanguage() {
+      const lang = languages[currentLanguageIndex];
+      // Update the document title
+      document.title = translations[lang]["header_title"].replace(/<br>/g, ' '); // Remove <br> for title
+
+      document.querySelectorAll('[data-key]').forEach(element => {
+        const key = element.getAttribute('data-key');
+        if (translations[lang] && translations[lang][key]) {
+          element.innerHTML = translations[lang][key];
+        }
+      });
+      // Update the title attribute for accessibility
+      document.getElementById('language-toggle').title = languageTitles[currentLanguageIndex];
+    }
+
+    // Function to toggle language
+    function toggleLanguage() {
+      currentLanguageIndex = (currentLanguageIndex + 1) % languages.length;
+      updateContentLanguage();
+      // Ensure the current section is re-displayed to apply language changes
+      const activeSection = document.querySelector('.guide-section.active, .intro-card.active');
+      if (activeSection) {
+        showSection(activeSection.id);
+      }
+    }
+
+    // Function to show a specific section and hide others
+    function showSection(sectionId) {
+      const sections = document.querySelectorAll('.guide-section, .intro-card');
+      sections.forEach(section => {
+        section.classList.remove('active');
+        section.style.display = 'none'; // Ensure display is none for hidden sections
+      });
+
+      const activeSection = document.getElementById(sectionId);
+      if (activeSection) {
+        activeSection.classList.add('active');
+        activeSection.style.display = 'block'; // Show the active section
+        window.scrollTo(0, 0); // Scroll to the top of the page
+      }
+      // Close the menu if open
+      const tocMenu = document.getElementById('toc-menu');
+      if (tocMenu.classList.contains('active')) {
+        tocMenu.classList.remove('active');
+      }
+      updateContentLanguage(); // Update language when section changes
+    }
+
+    // Function to hide the intro card and show the first guide section
+    function hideIntro() {
+      document.getElementById('intro-card').style.display = 'none';
+      showSection('prep'); // Show the first actual guide section
+    }
+
+    // Function to toggle the visibility of the TOC menu
+    function toggleMenu() {
+      const tocMenu = document.getElementById('toc-menu');
+      tocMenu.classList.toggle('active');
+    }
+
+    // Show the introduction card and set initial language when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      showSection('intro-card');
+      updateContentLanguage(); // Set initial language
+    });
+  </script>
+
+</body>
+
+</html>
